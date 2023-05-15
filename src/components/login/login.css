@@ -1,0 +1,11 @@
+.toast-error {
+    /* background-color: red;
+    color: white; */
+    height:2rem;
+    width:2rem;
+   
+  }
+
+  .toast-container{
+    width: 100%;
+  }

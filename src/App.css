@@ -6,7 +6,25 @@
   background-color:white;
   opacity: 0.2;
 }
+.darkerBlue{
+  background-color:#20646e;
+  
+}
+.darkBlue{
+  background-color: #3BACB6;
+ 
+}
+.lightBlue{
+  background-color: #82DBD8;
 
+}
+.lighterBlue{
+  background-color: #d0e8e7;
+
+}
+.custom-nav-dropdown > a.nav-link {
+  color: white !important;
+}
 .btnColor{
   background-color:rgb(5, 102, 137);
   color: white;
@@ -30,3 +48,13 @@
   display: flex;
   justify-content: center;
 }
+.backgroundImage{
+  
+    position: relative;
+    background: url('../src/assets/crmPic.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    filter: brightness(0.5)
+  }
+  
+ 
