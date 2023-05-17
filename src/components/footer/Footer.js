@@ -1,10 +1,9 @@
-import React from 'react'
 import './footer.css'
-
-function Footer() {
-  return (
-    <div>Footer</div>
-  )
+const Footer = () => {
+    return (
+        <div className="darkerBlue footer-container">
+            <h3 className="copyright">©2022-2023 Sharil Pvt Ltd,TN Inc. All Rights Reserved</h3>
+        </div>
+    )
 }
-
-export default Footer
+export default Footer;

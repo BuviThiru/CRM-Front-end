@@ -1,18 +1,18 @@
 import { Container, Row, Col, Form } from "react-bootstrap";
 import "./login.css";
 import React, { useState } from "react";
-// import bdImage from "../../assets/crmPic.jpg";
-import { useDispatch } from "react-redux";
-import { addUser } from "../../utils/userSlice";
+
+
+
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   function onInputChange(e) {
     const { name, value } = e.target;
     if (name === "email") {
@@ -32,7 +32,6 @@ function Login() {
         text: "All fields are mandatory",
         icon: "warning",
       });
-
       return;
     }
     try {
@@ -52,8 +51,10 @@ function Login() {
        
 
         localStorage.setItem("token", data.Message.token);
-        console.log(data.Message.user);
-        dispatch(addUser(data.Message.user));
+        localStorage.setItem("name",data.Message.user.name);
+          localStorage.setItem("email",data.Message.user.email);
+          localStorage.setItem("userType",data.Message.user.userType)
+       
         Swal.fire({
           title: "Welcome!",
           text: "Successfully Signed-up & Authenticated",

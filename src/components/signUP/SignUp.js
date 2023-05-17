@@ -1,13 +1,10 @@
 import "./signup.css";
 import React, { useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
-// import bdImage from '../../assets/crmPic.jpg'
-import { useDispatch } from "react-redux";
-import { addUser } from "../../utils/userSlice";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 function SignUp() {
-  const dispatch = useDispatch();
+  
   const navigate = useNavigate();
   const [user, setUser] = useState({
     name: "",
@@ -46,7 +43,7 @@ function SignUp() {
         }
       );
       const data = await response.json();
-      console.log(data);
+
 
       if (data.status === 201) {
         const response = await fetch(
@@ -66,7 +63,10 @@ function SignUp() {
         if (data1.status === 201) {
         
           localStorage.setItem("token", data1.Message.token);
-          dispatch(addUser(data1.Message.user));
+          console.log(data1.Message.user)
+          localStorage.setItem("name",data1.Message.user.name);
+          localStorage.setItem("email",data1.Message.user.email);
+          localStorage.setItem("userType",data1.Message.user.userType)
           Swal.fire({
             title: "Welcome!",
             text: "Successfully Signed-up & Authenticated",
