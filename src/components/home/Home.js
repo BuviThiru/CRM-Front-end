@@ -13,8 +13,8 @@ function Home() {
   };
 
   return (
-    <div className='lighterBlue' style={{width:"165vh"}}>
-      <div>Hia</div>
+    <div >
+      <div>Hai</div>
     <div className={`button-container ${isMoving ? "moving" : ""}`}>
       <button onClick={handleButtonClick}>Move</button>
     </div>

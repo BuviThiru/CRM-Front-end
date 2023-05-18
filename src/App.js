@@ -7,7 +7,7 @@ import Home from "../src/components/home/Home";
 import NavBar from "../src/components/navbar/Navbar";
 import Footer from "./components/footer/Footer" ;
 
-import Admin from "../src/components/admin/AdminPage";
+import AdminPage from "../src/components/admin/AdminPage";
 import SideBar from "./components/sideBar/SideBar";
 
 
@@ -18,9 +18,9 @@ function withLayout(Component) {
     return (
       <>
         <NavBar />
-        <div className="d-flex flexDirection column">
-        <SideBar />
-        {Component}
+        <div className="d-flex flexDirection column" style={{ marginTop: '3.5rem'}}>
+        <div><SideBar /></div>     
+        <div className='lighterBlue' style={{width:"165vh"}}>{Component}</div>      
         </div>
         <Footer />
       </>
@@ -29,8 +29,9 @@ function withLayout(Component) {
 
 
 function App() {
-  const token = useState(localStorage.getItem("token"));
-  const userType = useState(localStorage.getItem("userType"))
+  const token = localStorage.getItem("token");
+  const userType = localStorage.getItem("userType")
+
  
   return (
  
@@ -42,7 +43,9 @@ function App() {
         ) : (
           <Navigate to="/login" replace={true}/>
         )} />
-        <Route path="/admin" element={userType==="Admin"? withLayout(<Admin/>) : <Navigate to="/" replace={true}/>} />
+        <Route path="/admin" element={userType==="Admin"? withLayout(<AdminPage/>) : (
+          <Navigate to="/" replace={true}/>
+        )} />
       </Routes>
     </Router>
 
