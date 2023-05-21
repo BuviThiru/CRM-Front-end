@@ -5,24 +5,82 @@ import ExportCsv from '@material-table/exporters/csv';
 import ExportPdf from '@material-table/exporters/pdf';
 import axios from 'axios';
 import BASE_URL from '../../utils/urls';
+import TicketCard from '../ticketCards/TicketCards';
 
 function AdminPage() {
   const [allUser,setAllUser]= useState([])
+  const [tickets, setTickets] = useState(100)
   const token = localStorage.getItem("token");
+  const [cardData,setCardData]= useState([])
   const user = localStorage.getItem("user")
+  const ticketStatus = ["open", "inProgress", "resolved", "cancelled", "onHold"];
+    const ticketCardColor = ["success" , "primary", "info", "warning", "light"];
+
   axios.defaults.headers.common['x-access-token'] = token;
   useEffect(()=>{
-     getAllusers()
+     getAllusers() ;
+    
+   
+    
+  },[])
+  useEffect(()=>{
+    cardDetails()
+  },[tickets])
+ useEffect(()=>{
+  getTicketsByStatus()
+ })
+  useEffect(()=>{
+    getAllTickets();
     
   },[])
 const getAllusers = async() =>{
+
   let response = await axios.get(BASE_URL+"/getallusers") 
+  
   setAllUser( response.data.Users)
 
 }
 
+const getAllTickets = async()=>{
+  let response = await axios.get(BASE_URL+"/tickets/gettickets") 
+  // console.log(response.data.Tickets)
+  setTickets(response.data.Tickets)
+}
+const getTicketsByStatus =async()=>{
+  let res = [];
+  for(let i=0;i<ticketStatus.length;i++){
+    const response = await axios.get(BASE_URL+`/tickets/getticketsByStatus/${ticketStatus[i]}`)
+  res.push(response.data.Tickets)
+  }
+  // console.log(res)
+return res
+
+}
+const cardDetails = async()=> {
+  let result = await getTicketsByStatus();
+  // console.log(tickets?.length)
+  let cardData = []
+  for(let i=0;i<ticketStatus.length;i++){
+    const data = {
+         cardTitle : ticketStatus[i],
+         cardColor  : ticketCardColor[i],
+         numberOfTickets: result[i].length,
+         percentage : (result[i].length*100)/tickets.length
+
+,    }
+    cardData.push(data)
+  } 
+  setCardData(cardData)
+}
   return (
     <div>
+      {/* <h1>Welcome {user}</h1> */}
+    <div>
+      <div className='d-flex justify-content-between'>
+        {cardData.map((card,index)=>{
+          return <div key={index} className='m-3'> <TicketCard {...card}/> </div>
+        })}
+      </div>
 <hr style={{margin: 2+"rem"}}/>
 {
     /*user data table*/
@@ -33,7 +91,7 @@ const getAllusers = async() =>{
         // columns from Columns Button
         columnsButton: true,
         filtering: true,
-        sorting: true,
+     
         exportMenu: [
             {
               label: "Export PDF",
@@ -87,6 +145,7 @@ const getAllusers = async() =>{
     />
 }
 
+</div>
 </div>
   )
 }
