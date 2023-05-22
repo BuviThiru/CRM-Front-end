@@ -6,6 +6,11 @@ import ExportPdf from '@material-table/exporters/pdf';
 import axios from 'axios';
 import BASE_URL from '../../utils/urls';
 import TicketCard from '../ticketCards/TicketCards';
+import Modal from "react-bootstrap/Modal";
+import {ModalHeader, ModalTitle} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function AdminPage() {
   const [allUser,setAllUser]= useState([])
@@ -13,8 +18,10 @@ function AdminPage() {
   const token = localStorage.getItem("token");
   const [cardData,setCardData]= useState([])
   const user = localStorage.getItem("user")
+  const [rowUser, setRowUser] = useState("")
   const ticketStatus = ["open", "inProgress", "resolved", "cancelled", "onHold"];
     const ticketCardColor = ["success" , "primary", "info", "warning", "light"];
+    const [showUserModal,setShowUserModal] = useState(false)
 
   axios.defaults.headers.common['x-access-token'] = token;
   useEffect(()=>{
@@ -72,6 +79,16 @@ const cardDetails = async()=> {
   } 
   setCardData(cardData)
 }
+function closeUserModal(){
+  setShowUserModal(false)
+}
+
+const changeUserDetails = (event) =>{
+  const {name, value} = event.target;
+  rowUser[name]=value;
+  setRowUser(rowUser);
+  setShowUserModal(event.target.value);
+}
   return (
     <div>
       {/* <h1>Welcome {user}</h1> */}
@@ -85,13 +102,17 @@ const cardDetails = async()=> {
 {
     /*user data table*/
     <MaterialTable 
+    onRowClick = {(event,rowData)=>{
+          setRowUser(rowData);
+          setShowUserModal(true)
+    }}
     title={"User Records"}
     options={{
         // Allow user to hide/show
         // columns from Columns Button
         columnsButton: true,
         filtering: true,
-     
+      
         exportMenu: [
             {
               label: "Export PDF",
@@ -144,6 +165,58 @@ const cardDetails = async()=> {
       ]}
     />
 }
+<Modal show={showUserModal} onHide={closeUserModal}>
+                        <ModalHeader closeButton>
+                            <ModalTitle>Edit user details</ModalTitle>
+                        </ModalHeader>
+                        <Modal.Body>
+                            <form >
+                                <h5 className='card-subtitle text-primary lead'>User Id: {rowUser._id}</h5>
+                                <hr />
+                                <div className='input-group mb-3'>
+                                    <label className='label input-group-text label-md'>Name</label>
+                                    <input type='text' className='form-control' name='name' value={rowUser.name} onChange={changeUserDetails}/>
+                                </div>
+                                <div className='input-group mb-3'>
+                                    <label className='label input-group-text label-md'>Email</label>
+                                    <input type='email' className='form-control' name='email' value={rowUser.email} onChange={changeUserDetails}/>
+                                </div>
+                                <div className='input-group mb-3'>
+                                    <label className='label input-group-text label-md'>User Type</label>
+                                    <select className='form-select' name="userType" value = {rowUser.userType} onChange={changeUserDetails}>
+                                        <option value = "customer">Customer</option>
+                                        <option value = "engineer">Engineer</option>
+                                        <option value = "admin">Admin</option>
+                                </select>
+                                </div>
+                                <div className='input-group mb-3'>
+                                    <label className='label input-group-text label-md'>User Status</label>
+                                    <select className='form-select' name="userStatus" value = {rowUser.userStatus} onChange={changeUserDetails}>
+                                        <option value = "pending">Pending</option>
+                                        <option value = "approved">Approved</option>
+                                        <option value = "suspended">Suspended</option>
+                                        <option value = "rejected">Rejected</option>
+                                </select>
+                                </div>
+                                <div className='input-group mb-3'>
+                                    <label className='label input-group-text label-md'>Tickets Created</label>
+                                    <input type='text' className='form-control' name='ticketsCreated' value={rowUser.ticketsCreated} disabled/>
+                                </div>
+                                <div className='input-group mb-3'>
+                                    <label className='label input-group-text label-md'>Tickets Assigned</label>
+                                    <input type='text' className='form-control' name='ticketsAssigned' value={rowUser.ticketsAssigned} disabled/>
+                                </div>
+                            </form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={closeUserModal}>
+                                Close
+                            </Button>
+                            <Button variant="primary" >
+                                Save
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
 
 </div>
 </div>
