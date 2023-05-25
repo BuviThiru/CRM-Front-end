@@ -17,7 +17,7 @@ function AdminPage() {
   const [tickets, setTickets] = useState(100)
   const token = localStorage.getItem("token");
   const [cardData,setCardData]= useState([])
-  const user = localStorage.getItem("user")
+  // const user = localStorage.getItem("user")
   const [rowUser, setRowUser] = useState("")
   const ticketStatus = ["open", "inProgress", "resolved", "cancelled", "onHold"];
     const ticketCardColor = ["success" , "primary", "info", "warning", "light"];
@@ -88,6 +88,20 @@ const changeUserDetails = (event) =>{
   rowUser[name]=value;
   setRowUser(rowUser);
   setShowUserModal(event.target.value);
+}
+
+const updateUser = async()=>{
+  let updatedUser = {
+    id : rowUser._id,
+    name : rowUser.name,
+    email:rowUser.email,
+    userType : rowUser.userType,
+    userStatus : rowUser.userStatus
+  }
+   axios.patch(BASE_URL+'/user/updateUser',updatedUser)
+   getAllusers() ;
+   setShowUserModal(false)
+
 }
   return (
     <div>
@@ -184,17 +198,16 @@ const changeUserDetails = (event) =>{
                                 <div className='input-group mb-3'>
                                     <label className='label input-group-text label-md'>User Type</label>
                                     <select className='form-select' name="userType" value = {rowUser.userType} onChange={changeUserDetails}>
-                                        <option value = "customer">Customer</option>
-                                        <option value = "engineer">Engineer</option>
-                                        <option value = "admin">Admin</option>
+                                        <option value = "Customer">Customer</option>
+                                        <option value = "Engineer">Engineer</option>
+                                        <option value = "Admin">Admin</option>
                                 </select>
                                 </div>
                                 <div className='input-group mb-3'>
                                     <label className='label input-group-text label-md'>User Status</label>
                                     <select className='form-select' name="userStatus" value = {rowUser.userStatus} onChange={changeUserDetails}>
                                         <option value = "pending">Pending</option>
-                                        <option value = "approved">Approved</option>
-                                        <option value = "suspended">Suspended</option>
+                                        <option value = "approved">Approved</option>                                      
                                         <option value = "rejected">Rejected</option>
                                 </select>
                                 </div>
@@ -212,7 +225,7 @@ const changeUserDetails = (event) =>{
                             <Button variant="secondary" onClick={closeUserModal}>
                                 Close
                             </Button>
-                            <Button variant="primary" >
+                            <Button variant="primary" onClick= {updateUser}>
                                 Save
                             </Button>
                         </Modal.Footer>
