@@ -6,9 +6,14 @@ import logo from '../../assets/logo1.jpg'
 import './navbar.css'
 
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 function NavBar() {
-  const name = localStorage.getItem("name");
+  const [name,setName] = useState("")
+  useEffect(()=>{
+  setName(  localStorage.getItem("name"));
+  },[])
+  
   const navigate = useNavigate();
   function logout() {
     localStorage.clear();
@@ -32,23 +37,15 @@ function NavBar() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link className="mr-2 text-white font-weight-bold">
+              <Nav.Link className="mr-3 text-white font-weight-bold" onClick={handleLogo}>
                 Home
               </Nav.Link>
-              <Nav.Link className="mr-2 text-white font-weight-bold">
+              <Nav.Link className="mr-3 text-white font-weight-bold">
                 Welcome {name}!
               </Nav.Link>
-              <NavDropdown
-                className="mr-2 custom-nav-dropdown font-weight-bold"
-                title="Tickets"
-                id="basic-nav-dropdown"
-              >
-                <NavDropdown.Item> Create New Ticket</NavDropdown.Item>
-                <NavDropdown.Item> View your Tickets</NavDropdown.Item>
-                <NavDropdown.Item> Tickets Assigned</NavDropdown.Item>
-              </NavDropdown>
+              
               <Nav.Link
-                className="mr-2 text-white font-weight-bold"
+                className="mr-3 text-white font-weight-bold"
                 onClick={logout}
               >
                 Logout

@@ -17,7 +17,7 @@ function AdminPage() {
   const [tickets, setTickets] = useState(100)
   const token = localStorage.getItem("token");
   const [cardData,setCardData]= useState([])
-  // const user = localStorage.getItem("user")
+ 
   const [rowUser, setRowUser] = useState("")
   const ticketStatus = ["open", "inProgress", "resolved", "cancelled", "onHold"];
     const ticketCardColor = ["success" , "primary", "info", "warning", "light"];
@@ -25,8 +25,7 @@ function AdminPage() {
 
   axios.defaults.headers.common['x-access-token'] = token;
   useEffect(()=>{
-     getAllusers() ;
-    
+     getAllusers() ; 
    
     
   },[])
@@ -50,7 +49,7 @@ const getAllusers = async() =>{
 
 const getAllTickets = async()=>{
   let response = await axios.get(BASE_URL+"/tickets/gettickets") 
-  // console.log(response.data.Tickets)
+ 
   setTickets(response.data.Tickets)
 }
 const getTicketsByStatus =async()=>{
@@ -59,13 +58,13 @@ const getTicketsByStatus =async()=>{
     const response = await axios.get(BASE_URL+`/tickets/getticketsByStatus/${ticketStatus[i]}`)
   res.push(response.data.Tickets)
   }
-  // console.log(res)
+
 return res
 
 }
 const cardDetails = async()=> {
   let result = await getTicketsByStatus();
-  // console.log(tickets?.length)
+
   let cardData = []
   for(let i=0;i<ticketStatus.length;i++){
     const data = {

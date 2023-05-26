@@ -1,18 +1,13 @@
-.button-container {
-    position: relative;
-    animation-duration: 1s; /* Adjust the duration to match the setTimeout duration */
-    animation-fill-mode: forwards;
-  }
+
+
+  .homeContainer{
+ 
+    height: 87vh;  
+    display: flex;
+    flex-direction: column;
+   justify-content: center;    
+   align-items: center;
+   padding:2rem;
   
-  @keyframes moveButton {
-    from {
-      left: 0;
-    }
-    to {
-      left: 200px; /* Adjust the distance as needed */
-    }
   }
-  
-  .moving button {
-    animation-name: moveButton;
-  }
+

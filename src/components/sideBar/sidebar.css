@@ -1,16 +1,10 @@
 .sidebarContainer{
-    height:93vh;
+    height:87vh;
     width: 15rem;
     display: flex;
-    flex-direction: column;
-     /* padding-top: 5rem; */
-     box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.2);
-     align-items: center;
-     justify-content: center;
+    flex-direction: column;  
+    box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    color: white;
     
-}
-
-.resizeImage{
-    height:6rem;
-    width:6rem;
 }

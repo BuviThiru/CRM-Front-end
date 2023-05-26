@@ -1,24 +1,20 @@
 import React, { useState } from 'react'
 import "./home.css"
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-
-  const [isMoving, setIsMoving] = useState (false);
+const navigate = useNavigate()
 
   const handleButtonClick = () => {
-    setIsMoving(true);
-    setTimeout(() => {
-      setIsMoving(false);
-    }, 1000); // Adjust the duration as needed
+    navigate('/admin')
   };
 
   return (
-    <div >
-      <div>Hai</div>
-    <div className={`button-container ${isMoving ? "moving" : ""}`}>
-      <button onClick={handleButtonClick}>Move</button>
+    <div className='homeContainer' >
+      <h1> “Customer service is about empathy.” - Chaz Van de Motter</h1>  
+      <button className='btnColor' onClick={handleButtonClick}>Proceed</button>
     </div>
-    </div>
+ 
   );
   
  
