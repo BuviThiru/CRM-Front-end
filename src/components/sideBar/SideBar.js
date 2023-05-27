@@ -1,21 +1,16 @@
 import React from 'react'
 import './sidebar.css'
-
-
-
-
-
+import {FaUsers,FaUserAlt} from 'react-icons/fa'
+import {MdDashboard} from 'react-icons/md'
+import {BsTicketFill} from 'react-icons/bs'
 function SideBar() {
-  
-
-  return (
+    return (
     <div className="sidebarContainer darkBlue">
-        <h3 className='my-3'>Dash-Board</h3>
-        <h3 className= 'my-3'>Users</h3>
-        <h3 className='my-3'>Tickets</h3>
-        <h3 className='my-3'>My Profile</h3>
+        <div className='my-3'><span className='mr-2 '><MdDashboard/></span>Dash-Board</div>
+        <div className= 'my-3'><span className='mr-2 '><FaUsers/></span>Users</div>
+        <div className='my-3'><span className='mr-2 '><BsTicketFill/></span>Tickets</div>
+        <div className='my-3'><span className='mr-2 '><FaUserAlt/></span>My Profile</div>
     </div>
   )
 }
-
 export default SideBar

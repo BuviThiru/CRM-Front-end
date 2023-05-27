@@ -1,10 +1,15 @@
 .sidebarContainer{
-    height:87vh;
+    min-height: 87.3vh;
     width: 15rem;
     display: flex;
-    flex-direction: column;  
+    flex-direction: column;
     box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.2);
     padding: 1rem;
     color: white;
+    font-weight: bold;
+    position: sticky;
+    top: 3rem;
+    left: 0;
+    overflow-y: auto;
     
 }

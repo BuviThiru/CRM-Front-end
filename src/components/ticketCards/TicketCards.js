@@ -1,10 +1,15 @@
+
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-const TicketCard = (props) =>{
-    // console.log(props)
+
+const TicketCard = (props) =>{ 
+ 
     return (
-        <div className={"card bg-" + props.cardColor} style={{width: 12+"rem"}}>    
+     
+        <>
+        <div className={"card bg-" + props.cardColor} style={{width: 12+"rem"}} >   
+     
             <div className="card-body">
                 <h5 className="card-title">{props.cardTitle}</h5>
                 <hr />
@@ -24,6 +29,9 @@ const TicketCard = (props) =>{
                 </div>
             </div>
         </div>
+      
+    </>
+        
     )
 }
 

@@ -1,0 +1,7 @@
+.custom-modal .modal-dialog {
+    max-width: 100vh; /* Adjust the width as desired */
+  }
+  
+  .custom-modal .modal-content {
+    min-height: 90vh; /* Adjust the height as desired */
+  }
