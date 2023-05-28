@@ -12,6 +12,9 @@ import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import {getAllusers } from "../../utils/adminServices";
+import UserRecords from "../userRecords/UserRecords";
+import EditUserModal from "../editUserModal/EditUserModal";
+import TicketByStatusModal from "../ticketByStatusModal.js/TicketByStatusModal";
 
 function AdminPage() {
   const [allUser, setAllUser] = useState([]);
@@ -105,7 +108,8 @@ function AdminPage() {
       userStatus: rowUser.userStatus,
     };
     axios.patch(BASE_URL + "/user/updateUser", updatedUser);
-    getAllusers();
+   const users = await getAllusers();
+   setAllUser(users)
     setShowUserModal(false);
   };
 
@@ -124,77 +128,7 @@ function AdminPage() {
   return (
     <div>
       <div>
-        <Modal
-          show={showTicketModal}
-          onHide={closeTicketModal}
-          className="custom-modal"
-        >
-          <ModalHeader closeButton>
-            <ModalTitle>Tickets And Its Details</ModalTitle>
-          </ModalHeader>
-          <Modal.Body>
-            <MaterialTable
-              title={"Tickets"}
-              options={{
-                // Allow user to hide/show
-                // columns from Columns Button
-                columnsButton: true,
-                filtering: true,
-
-                exportMenu: [
-                  {
-                    label: "Export PDF",
-                    //// You can do whatever you wish in this function. We provide the
-                    //// raw table columns and table data for you to modify, if needed.
-                    // exportFunc: (cols, datas) => console.log({ cols, datas })
-                    exportFunc: (cols, datas) =>
-                      ExportPdf(cols, datas, "userDataPdf"),
-                  },
-                  {
-                    label: "Export CSV",
-                    exportFunc: (cols, datas) =>
-                      ExportCsv(cols, datas, "userDataCsv"),
-                  },
-                ],
-                headerStyle: {
-                  backgroundColor: "#20646e",
-                  color: "#FFF",
-                },
-                rowStyle: {
-                  backgroundColor: "#d4d4d4",
-                },
-              }}
-              data={ticketsByStatus}
-              columns={[
-                {
-                  field: "createdBy",
-                  title: "Created By",
-                },
-                {
-                  field: "title",
-                  title: "Title",
-                },
-                {
-                  field: "ticketPriority",
-                  title: "Priority",
-                },
-                {
-                  field: "description",
-                  title: "Description",
-                },
-                {
-                  field: "assignedTo",
-                  title: "Assigned To",
-                },
-              ]}
-            />
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={closeTicketModal}>
-              Close
-            </Button>
-          </Modal.Footer>
-        </Modal>
+      <TicketByStatusModal showTicketModal={showTicketModal} closeTicketModal={closeTicketModal} ticketsByStatus={ticketsByStatus} />
       </div>
       <div>
         <div className="d-flex justify-content-between">
@@ -205,7 +139,7 @@ function AdminPage() {
                 className="m-3"
                 onClick={() => showTicketModalFn(index)}
               >
-                {" "}
+                
                 <TicketCard {...card} />{" "}
               </div>
             );
@@ -214,168 +148,18 @@ function AdminPage() {
         <hr style={{ margin: 2 + "rem" }} />
         {
           /*user data table*/
-          <MaterialTable
-            onRowClick={(event, rowData) => {
-              setRowUser(rowData);
-              setShowUserModal(true);
-            }}
-            title={"User Records"}
-            options={{
-              // Allow user to hide/show
-              // columns from Columns Button
-              columnsButton: true,
-              filtering: true,
-
-              exportMenu: [
-                {
-                  label: "Export PDF",
-                  //// You can do whatever you wish in this function. We provide the
-                  //// raw table columns and table data for you to modify, if needed.
-                  // exportFunc: (cols, datas) => console.log({ cols, datas })
-                  exportFunc: (cols, datas) =>
-                    ExportPdf(cols, datas, "userDataPdf"),
-                },
-                {
-                  label: "Export CSV",
-                  exportFunc: (cols, datas) =>
-                    ExportCsv(cols, datas, "userDataCsv"),
-                },
-              ],
-              headerStyle: {
-                backgroundColor: "#20646e",
-                color: "#FFF",
-              },
-              rowStyle: {
-                backgroundColor: "#d4d4d4",
-              },
-            }}
-            data={allUser}
-            columns={[
-              {
-                field: "name",
-                title: "Name",
-              },
-              {
-                field: "email",
-                title: "Email",
-              },
-              {
-                field: "userType",
-                title: "UserType",
-                lookup: {
-                  Admin: "Admin",
-                  Customer: "Customer",
-                  Engineer: "Engineer",
-                },
-              },
-              {
-                field: "userStatus",
-                title: "User Status",
-                lookup: {
-                  approved: "approved",
-                  pending: "pending",
-                  rejected: "rejected",
-                },
-              },
-            ]}
-          />
+       <UserRecords   allUser={allUser}
+       setRowUser={setRowUser}
+       setShowUserModal={setShowUserModal} />
         }
-        <Modal show={showUserModal} onHide={closeUserModal}>
-          <ModalHeader closeButton>
-            <ModalTitle>Edit user details</ModalTitle>
-          </ModalHeader>
-          <Modal.Body>
-            <form>
-              <h5 className="card-subtitle text-primary lead">
-                User Id: {rowUser._id}
-              </h5>
-              <hr />
-              <div className="input-group mb-3">
-                <label className="label input-group-text label-md">Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="name"
-                  value={rowUser.name}
-                  onChange={changeUserDetails}
-                />
-              </div>
-              <div className="input-group mb-3">
-                <label className="label input-group-text label-md">Email</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  name="email"
-                  value={rowUser.email}
-                  onChange={changeUserDetails}
-                />
-              </div>
-              <div className="input-group mb-3">
-                <label className="label input-group-text label-md">
-                  User Type
-                </label>
-                <select
-                  className="form-select"
-                  name="userType"
-                  value={rowUser.userType}
-                  onChange={changeUserDetails}
-                >
-                  <option value="Customer">Customer</option>
-                  <option value="Engineer">Engineer</option>
-                  <option value="Admin">Admin</option>
-                </select>
-              </div>
-              <div className="input-group mb-3">
-                <label className="label input-group-text label-md">
-                  User Status
-                </label>
-                <select
-                  className="form-select"
-                  name="userStatus"
-                  value={rowUser.userStatus}
-                  onChange={changeUserDetails}
-                >
-                  <option value="pending">Pending</option>
-                  <option value="approved">Approved</option>
-                  <option value="rejected">Rejected</option>
-                </select>
-              </div>
-              <div className="input-group mb-3">
-                <label className="label input-group-text label-md">
-                  Tickets Created
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="ticketsCreated"
-                  value={rowUser.ticketsCreated}
-                  disabled
-                />
-              </div>
-              <div className="input-group mb-3">
-                <label className="label input-group-text label-md">
-                  Tickets Assigned
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="ticketsAssigned"
-                  value={rowUser.ticketsAssigned}
-                  disabled
-                />
-              </div>
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={closeUserModal}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={updateUser}>
-              Save
-            </Button>
-          </Modal.Footer>
-        </Modal>
+       
       </div>
+      <EditUserModal 
+      showUserModal ={showUserModal} 
+      closeUserModal={closeUserModal} 
+      rowUser={rowUser}       
+      changeUserDetails={changeUserDetails} 
+      updateUser ={updateUser}/>
     </div>
   );
 }
