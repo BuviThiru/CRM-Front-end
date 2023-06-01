@@ -47,21 +47,20 @@ function Login() {
       );
       const data = await response.json();
 
-      if (data.status === 201) {
-       
-
+      if (data.status === 201) {    
         localStorage.setItem("token", data.Message.token);
         localStorage.setItem("name",data.Message.user.name);
-          localStorage.setItem("email",data.Message.user.email);
-          localStorage.setItem("userType",data.Message.user.userType)
+        localStorage.setItem("email",data.Message.user.email);
+        localStorage.setItem("userType",data.Message.user.userType)
        
         Swal.fire({
           title: "Welcome!",
           text: "Successfully Signed-up & Authenticated",
           icon: "success",
-        }).then(() => {
-       
+        }).then(() => { 
+             
           navigate("/");
+    
         });
       } else {
         Swal.fire({

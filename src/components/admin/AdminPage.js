@@ -1,79 +1,98 @@
 import React, { useEffect, useState } from "react";
 import "./admin.css";
-import MaterialTable from "@material-table/core";
-import ExportCsv from "@material-table/exporters/csv";
-import ExportPdf from "@material-table/exporters/pdf";
 import axios from "axios";
 import BASE_URL from "../../utils/urls";
 import TicketCard from "../ticketCards/TicketCards";
-import Modal from "react-bootstrap/Modal";
-import { ModalHeader, ModalTitle } from "react-bootstrap";
-import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import {getAllusers } from "../../utils/adminServices";
+import { getAllusers } from "../../utils/adminServices";
 import UserRecords from "../userRecords/UserRecords";
 import EditUserModal from "../editUserModal/EditUserModal";
 import TicketByStatusModal from "../ticketByStatusModal.js/TicketByStatusModal";
+import TicketRecords from "../ticketRecords/TicketRecords";
+import EditTicketModal from "../editTicketModal/EditTicketModal";
+import SideBar from "../sideBar/SideBar";
+import UserPRofile from "../userProfile/UserPRofile";
+import './admin.css'
 
 function AdminPage() {
   const [allUser, setAllUser] = useState([]);
-  const [tickets, setTickets] = useState(100);
-  const token = localStorage.getItem("token");
+  const [tickets, setTickets] = useState([]);
   const [cardData, setCardData] = useState([]);
   const [ticketsDetails, setTicketsDetails] = useState([]);
   const [ticketsByStatus, setTicketsByStatus] = useState([]);
   const [rowUser, setRowUser] = useState("");
-  const ticketStatus = ["open","inProgress", "resolved", "cancelled", "onHold" ];
+  const ticketStatus = [
+    "open",
+    "inProgress",
+    "resolved",
+    "cancelled",
+    "onHold",
+  ];
   const ticketCardColor = ["success", "primary", "info", "warning", "light"];
   const [showUserModal, setShowUserModal] = useState(false);
   const [showTicketModal, setShowTicketModal] = useState(false);
+  const [rowTicket, setRowTicket] = useState("");
+  const [showEditTicketModal, setShowEditTicketModal] = useState(false);
 
-  
+  const [showTickectCards, setShowTicketCards] = useState(true);
+  const [showUserRecords, setShowUserRecords] = useState(true);
+  const [showTicketRecords, setShowTicketRecords] = useState(false);
+  const [showUserProfile, setShowUserProfile] = useState(false);
+  const userType = localStorage.getItem("userType")
 
-  useEffect(() => {cardDetails();}, [tickets]);
-  useEffect(() => {getTicketsByStatus();}, []);
-  useEffect(() => {getAllTickets(); }, []);
+
+  useEffect(() => {
+    cardDetails();
+  }, [tickets]);
+  useEffect(() => {
+    getTicketsByStatus();
+  }, []);
+  useEffect(() => {
+    getAllTickets();
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const user = await getAllusers();
         setAllUser(user);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
-  
+
     fetchData();
   }, []);
 
-
-
   const getAllTickets = async () => {
-  try {
-    let response = await axios.get(BASE_URL + "/tickets/gettickets");
-    setTickets(response.data.Tickets);
-  } catch (error) {
-    console.log(error)
-  }
+    try {
+      let response = await axios.get(BASE_URL + "/tickets/gettickets");
+      const ticketsWithIds = response.data.Tickets.map((ticket, index) => ({
+        ...ticket,
+        id: index + 1, // Generate a unique id for each ticket
+      }));
+      setTickets(ticketsWithIds);
+    } catch (error) {
+      console.log(error);
+    }
   };
   const getTicketsByStatus = async () => {
     try {
       let res = [];
-    for (let i = 0; i < ticketStatus.length; i++) {
-      const response = await axios.get(
-        BASE_URL + `/tickets/getticketsByStatus/${ticketStatus[i]}`
-      );
-      const ticketsWithId = response.data.Tickets.map((ticket) => ({
-        ...ticket,
-        id: ticket._id, // Add the id property using the existing _id property
-      }));
-      res.push(ticketsWithId);
-    }
-    setTicketsDetails(res);
-    return res;
+      for (let i = 0; i < ticketStatus.length; i++) {
+        const response = await axios.get(
+          BASE_URL + `/tickets/getticketsByStatus/${ticketStatus[i]}`
+        );
+        const ticketsWithId = response.data.Tickets.map((ticket) => ({
+          ...ticket,
+          id: ticket._id, // Add the id property using the existing _id property
+        }));
+        res.push(ticketsWithId);
+      }
+      setTicketsDetails(res);
+      return res;
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -98,6 +117,13 @@ function AdminPage() {
     setRowUser(rowUser);
     setShowUserModal(event.target.value);
   };
+  const changeTicketDetails = (event) => {
+    const { name, value } = event.target;
+
+    rowTicket[name] = value;
+    setRowTicket(rowTicket);
+    setShowEditTicketModal(event.target.value);
+  };
 
   const updateUser = async () => {
     let updatedUser = {
@@ -108,9 +134,32 @@ function AdminPage() {
       userStatus: rowUser.userStatus,
     };
     axios.patch(BASE_URL + "/user/updateUser", updatedUser);
-   const users = await getAllusers();
-   setAllUser(users)
+    const users = await getAllusers();
+    setAllUser(users);
     setShowUserModal(false);
+  };
+
+  const updateTicket = async () => {
+    try {
+      let updatedTicketObj = {
+        id: rowTicket._id,
+        title: rowTicket.title,
+        description: rowTicket.description,
+        status: rowTicket.status,
+        ticketPriority: rowTicket.ticketPriority,
+        assignedTo: rowTicket.assignedTo,
+      };
+      let response = await axios.patch(
+        BASE_URL + `/tickets/updateTicket/${rowTicket._id}`,
+        updatedTicketObj
+      );
+      await getAllTickets();
+      setShowEditTicketModal(false);
+      if (response.data.result) alert("update successful");
+    } catch (err) {
+      console.log(err);
+      alert(err?.response?.data?.result);
+    }
   };
 
   function closeUserModal() {
@@ -124,42 +173,91 @@ function AdminPage() {
     setTicketsByStatus(ticketsDetails[index]);
     setShowTicketModal(true);
   }
+  function closeEditTicketModal() {
+    setShowEditTicketModal(false);
+  }
 
   return (
-    <div>
+    <div className="d-flex  mainPageContainer">
       <div>
-      <TicketByStatusModal showTicketModal={showTicketModal} closeTicketModal={closeTicketModal} ticketsByStatus={ticketsByStatus} />
+        <SideBar
+          {...{
+            setShowTicketCards,
+            setShowTicketRecords,
+            setShowUserProfile,
+            setShowUserRecords,
+          }}
+        />
       </div>
-      <div>
-        <div className="d-flex justify-content-between">
-          {cardData.map((card, index) => {
-            return (
-              <div
-                key={index}
-                className="m-3"
-                onClick={() => showTicketModalFn(index)}
-              >
-                
-                <TicketCard {...card} />{" "}
-              </div>
-            );
-          })}
+      <div className="adminContainer">
+        {showTicketRecords && (
+          <div>
+            <TicketRecords
+              tickets={tickets}
+              setRowTicket={setRowTicket}
+              setShowEditTicketModal={setShowEditTicketModal}
+
+
+            />
+          </div>
+        )}
+        <div>
+          <TicketByStatusModal
+            showTicketModal={showTicketModal}
+            closeTicketModal={closeTicketModal}
+            ticketsByStatus={ticketsByStatus}
+          />
         </div>
-        <hr style={{ margin: 2 + "rem" }} />
-        {
-          /*user data table*/
-       <UserRecords   allUser={allUser}
-       setRowUser={setRowUser}
-       setShowUserModal={setShowUserModal} />
-        }
-       
+        <div>
+
+          {showTickectCards && (
+            <>
+            <div className="d-flex justify-content-between">
+              {cardData.map((card, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="m-3 d-flex justify-content-center"
+                    onClick={() => showTicketModalFn(index)}
+                  >
+                    <TicketCard {...card} />{" "}
+                  </div>
+                );
+              })}
+              
+            </div>
+            <hr/></>
+          )}
+
+          {userType === "Admin" && showUserRecords ? (
+            <div>
+              <UserRecords
+                allUser={allUser}
+                setRowUser={setRowUser}
+                setShowUserModal={setShowUserModal}
+              />
+            </div>
+          ):<></>}
+        </div>
+        <div>
+          <EditTicketModal
+            showEditTicketModal={showEditTicketModal}
+            closeEditTicketModal={closeEditTicketModal}
+            rowTicket={rowTicket}
+            changeTicketDetails={changeTicketDetails}
+            updateTicket={updateTicket}
+          />
+        </div>
+        <div className="sideBarContainer p-5"> {showUserProfile && <UserPRofile />}</div>
+        <EditUserModal
+          showUserModal={showUserModal}
+          closeUserModal={closeUserModal}
+          rowUser={rowUser}
+          changeUserDetails={changeUserDetails}
+          updateUser={updateUser}
+        />
       </div>
-      <EditUserModal 
-      showUserModal ={showUserModal} 
-      closeUserModal={closeUserModal} 
-      rowUser={rowUser}       
-      changeUserDetails={changeUserDetails} 
-      updateUser ={updateUser}/>
+    
     </div>
   );
 }

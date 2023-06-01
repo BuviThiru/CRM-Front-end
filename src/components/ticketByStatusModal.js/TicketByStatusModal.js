@@ -11,9 +11,10 @@ function TicketByStatusModal({showTicketModal,closeTicketModal,ticketsByStatus})
     <Modal
     show={showTicketModal}
     onHide={closeTicketModal}
-    className="custom-modal"
+    size="lg"
+    // className="custom-modal"
     >
-    <ModalHeader closeButton>
+    <ModalHeader >
       <ModalTitle>Tickets And Its Details</ModalTitle>
     </ModalHeader>
     <Modal.Body>

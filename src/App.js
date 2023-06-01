@@ -8,19 +8,14 @@ import NavBar from "../src/components/navbar/Navbar";
 import Footer from "./components/footer/Footer" ;
 
 import AdminPage from "../src/components/admin/AdminPage";
-import SideBar from "./components/sideBar/SideBar";
-
-
-import { useState } from "react";
 
 
 function withLayout(Component) { 
     return (
       <>
         <NavBar />
-        <div className="d-flex flexDirection column" style={{ marginTop: '3.5rem'}}>
-        <div><SideBar /></div>     
-        <div className='lighterBlue' style={{width:"165vh"}}>{Component}</div>      
+        <div  style={{ marginTop: '3.5rem'}}>     
+        <div className='lighterBlue'>{Component}</div>      
         </div>
         <Footer />
       </>
@@ -43,9 +38,8 @@ function App() {
         ) : (
           <Navigate to="/login" replace={true}/>
         )} />
-        <Route path="/admin" element={userType==="Admin"? withLayout(<AdminPage/>) : (
-          <Navigate to="/" replace={true}/>
-        )} />
+        <Route path="/admin"  element= {withLayout(<AdminPage/>)} replace={true}/>
+        
       </Routes>
     </Router>
 

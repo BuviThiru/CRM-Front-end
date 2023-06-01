@@ -38,13 +38,12 @@
 .btnColor-light{
   background-color:rgb(9, 82, 108);
   color: black;
-  padding:0.4rem 1rem;
-  
+  padding:0.4rem 1rem;  
   margin:auto;
   margin-top: 2rem;
   border:none;
   border-radius: 1rem;
-  /* width:70%; */
+ 
   display: flex;
   justify-content: center;
 }

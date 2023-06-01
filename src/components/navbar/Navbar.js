@@ -24,7 +24,7 @@ function NavBar() {
   }
   return (
     <Navbar
-      expand="lg"
+     
       className="d-flex align-item-center darkerBlue"
       fixed="top"
     >

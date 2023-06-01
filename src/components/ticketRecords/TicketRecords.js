@@ -3,17 +3,16 @@ import MaterialTable from "@material-table/core";
 import ExportCsv from "@material-table/exporters/csv";
 import ExportPdf from "@material-table/exporters/pdf";
 
-function UserRecords({allUser,setRowUser,setShowUserModal}) {
+function TicketRecords({tickets,setRowTicket,setShowEditTicketModal}) {
+
   return (
-    <div className='d-flex justify-content-center'>
+    <div>
            <MaterialTable
-             style={{ width: '100%' }}
             onRowClick={(event, rowData) => {
-              setRowUser(rowData);
-              setShowUserModal(true);
-              
+              setRowTicket(rowData);
+              setShowEditTicketModal(true);
             }}
-            title={"User Records"}
+            title={"Ticket Records"}
             options={{
               // Allow user to hide/show
               // columns from Columns Button
@@ -42,43 +41,69 @@ function UserRecords({allUser,setRowUser,setShowUserModal}) {
               rowStyle: {
                 backgroundColor: "#d4d4d4",
               },
-            }}
-            data={allUser}
+                        }}
+            data={tickets}
             columns={[
+           
               {
-                field: "name",
-                title: "Name",
+                field: "title",
+                title: "Title",
+               
               },
               {
-                field: "email",
-                title: "Email",
+                field: "description",
+                title: "Description",
+              },
+              {
+                field: "createdBy",
+                title: "Created By",
+             
+                
+              },
+              {
+                field: "clientName",
+                title: "Client",
+                width: "10%",
+                
+              },
+              {
+                field: "assignedTo",
+                title: "Assigned To"
+                
+              },
+              {
+                field: "status",
+                title: "Status",
+                width: "10%",
+                lookup: {
+                    open: "open",
+                    inProgress: "inProgress",
+                    resolved: "resolved",
+                    cancelled :"cancelled",
+                    onHold:"onHold"
+
+                  },
+                
+              },
+              {
+                field: "ticketPriority",
+                title: "Priority",
+                width: "10%",
+                lookup: {
+                    1: "1",
+                    2: "2",
+                    3: "3",
+                    4: "4"
+                  },
               },
               {
                 field: "_id",
-                title: "ID",
-              },
-              {
-                field: "userType",
-                title: "UserType",
-                lookup: {
-                  Admin: "Admin",
-                  Customer: "Customer",
-                  Engineer: "Engineer",
-                },
-              },
-              {
-                field: "userStatus",
-                title: "User Status",
-                lookup: {
-                  approved: "approved",
-                  pending: "pending",
-                  rejected: "rejected",
-                },
-              },
+                title:"ID"
+              }
             ]}
           />
     </div>
   )
 }
 
-export default UserRecords
+export default TicketRecords
