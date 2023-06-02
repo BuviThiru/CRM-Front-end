@@ -22,6 +22,7 @@ function AdminPage() {
   const [ticketsDetails, setTicketsDetails] = useState([]);
   const [ticketsByStatus, setTicketsByStatus] = useState([]);
   const [rowUser, setRowUser] = useState("");
+
   const ticketStatus = [
     "open",
     "inProgress",
@@ -34,18 +35,25 @@ function AdminPage() {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [rowTicket, setRowTicket] = useState("");
   const [showEditTicketModal, setShowEditTicketModal] = useState(false);
-
   const [showTickectCards, setShowTicketCards] = useState(true);
   const [showUserRecords, setShowUserRecords] = useState(true);
   const [showTicketRecords, setShowTicketRecords] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
+  const [assignedTicketsRecord, setAssignedTicketsRecords] =useState(false);
+  const [createdTicketsRecord, setCreatedTicketsRecords] = useState(false);
+  const [assignedTickets,setAssignedTickets]= useState([]);
+  const [createdTickets, setCreatedTickets]= useState([])
   const userType = localStorage.getItem("userType")
-
+ useEffect(()=>{
+  getMyAssignedTickets();
+  getMyCreatedTickets();
+ },[])
 
   useEffect(() => {
     cardDetails();
   }, [tickets]);
   useEffect(() => {
+    // getMyAssignedTickets()
     getTicketsByStatus();
   }, []);
   useEffect(() => {
@@ -64,9 +72,40 @@ function AdminPage() {
     fetchData();
   }, []);
 
+  async function getMyAssignedTickets() {
+    try {
+      let response = await axios.get(BASE_URL + "/tickets/getMyAssignedtickets");
+  
+      const ticketsWithIds = response.data.result.map((ticket, index) => ({
+        ...ticket,
+        id: index + 1, // Generate a unique id for each ticket
+      }));
+      setAssignedTickets(ticketsWithIds);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+
+
+  async function getMyCreatedTickets(){
+    try {
+      let response = await axios.get(BASE_URL + "/tickets/getMyCreatedtickets");
+     
+      const ticketsWithIds = response.data.result.map((ticket, index) => ({
+        ...ticket,
+        id: index + 1, // Generate a unique id for each ticket
+      }));
+      setCreatedTickets (ticketsWithIds);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const getAllTickets = async () => {
     try {
       let response = await axios.get(BASE_URL + "/tickets/gettickets");
+   
       const ticketsWithIds = response.data.Tickets.map((ticket, index) => ({
         ...ticket,
         id: index + 1, // Generate a unique id for each ticket
@@ -186,6 +225,8 @@ function AdminPage() {
             setShowTicketRecords,
             setShowUserProfile,
             setShowUserRecords,
+            setAssignedTicketsRecords,
+            setCreatedTicketsRecords
           }}
         />
       </div>
@@ -196,8 +237,24 @@ function AdminPage() {
               tickets={tickets}
               setRowTicket={setRowTicket}
               setShowEditTicketModal={setShowEditTicketModal}
-
-
+            />
+          </div>
+        )}
+          {assignedTicketsRecord && (
+          <div>
+            <TicketRecords
+              tickets={assignedTickets}
+              setRowTicket={setRowTicket}
+              setShowEditTicketModal={setShowEditTicketModal}
+            />
+          </div>
+        )}
+        {createdTicketsRecord && (
+          <div>
+            <TicketRecords
+              tickets={createdTickets}
+              setRowTicket={setRowTicket}
+              setShowEditTicketModal={setShowEditTicketModal}
             />
           </div>
         )}

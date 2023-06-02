@@ -1,6 +1,6 @@
 .sidebarContainer{
     min-height: 87.3vh;
-    width: 10rem;
+    width: 12rem;
     display: flex;
     flex-direction: column;
     box-shadow: 5px 0px 5px rgba(0, 0, 0, 0.2);
@@ -16,4 +16,16 @@
 
 .cursor-pointer {
     cursor: pointer;
+  }
+
+  .dropdown-select{
+    color:white;
+    font-weight: bold;
+    margin-right:0.2rem;
+
+  }
+
+  .dropdown-select:focus {
+    border: none;
+    outline: none;
   }

@@ -4,7 +4,7 @@ import { ModalHeader, ModalTitle } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 
 function EditTicketModal({showEditTicketModal,closeEditTicketModal,rowTicket,changeTicketDetails,updateTicket}) {
-  
+
   return (
     <Modal show={showEditTicketModal} onHide={closeEditTicketModal}>
     <ModalHeader closeButton>

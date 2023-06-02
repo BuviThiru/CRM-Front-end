@@ -1,10 +1,10 @@
 import "./signup.css";
 import React, { useState } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 function SignUp() {
-  
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [user, setUser] = useState({
     name: "",
@@ -12,9 +12,7 @@ function SignUp() {
     email: "",
     userType: "Customer",
   });
-  
 
-  
   function handleInputChange(e) {
     setUser({ ...user, [e.target.name]: e.target.value });
   }
@@ -23,6 +21,7 @@ function SignUp() {
   }
   const handleSignupSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     if (user.name === "" || user.password === "" || user.email === "") {
       Swal.fire({
         title: "Error!",
@@ -44,7 +43,6 @@ function SignUp() {
       );
       const data = await response.json();
 
-
       if (data.status === 201) {
         const response = await fetch(
           "https://crm-backend-fpru.onrender.com/crmapp/api/v1/auth/signin",
@@ -58,26 +56,19 @@ function SignUp() {
         );
         const data1 = await response.json();
 
-     
-
         if (data1.status === 201) {
-        
           localStorage.setItem("token", data1.Message.token);
-          console.log(data1.Message.user)
-          localStorage.setItem("name",data1.Message.user.name);
-          localStorage.setItem("email",data1.Message.user.email);
-          localStorage.setItem("userType",data1.Message.user.userType)
+          console.log(data1.Message.user);
+          localStorage.setItem("name", data1.Message.user.name);
+          localStorage.setItem("email", data1.Message.user.email);
+          localStorage.setItem("userType", data1.Message.user.userType);
           Swal.fire({
             title: "Welcome!",
             text: "Successfully Signed-up & Authenticated",
             icon: "success",
           }).then(() => {
-         
             navigate("/");
-          });    
-            
-          
-          
+          });
         } else {
           Swal.fire({
             title: "Sorry!",
@@ -99,24 +90,26 @@ function SignUp() {
         text: `${error}`,
         icon: "error",
       });
-    }
-  };
+    } finally {
+      setIsLoading(false); // Stop loading
+    }}
 
-  return (
-    <div className="backgroundImage">
-      <Container>
-        <Row
-          style={{
-            fontSize: "3rem",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <div className="mt-5 black font-weight-bold text-center">Sign Up</div>
-        </Row>
-        <Row className="mt-5 border p-5 xs={12} md={6}">
-          <Col className="text-start">
-             
+    return (
+      <div className="backgroundImage">
+        <Container>
+          <Row
+            style={{
+              fontSize: "3rem",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <div className="mt-5 black font-weight-bold text-center">
+              Sign Up
+            </div>
+          </Row>
+          <Row className="mt-5 border p-5 xs={12} md={6}">
+            <Col className="text-start">
               <Form onSubmit={handleSignupSubmit}>
                 <Form.Group className="mb-4 black font-weight-bold">
                   <Form.Label
@@ -186,27 +179,35 @@ function SignUp() {
                 <button
                   type="submit"
                   className="btnColor d-flex align-item-center"
+                  disabled={isLoading}
                 >
-                  Sign Up
+                  {isLoading ? (
+                    <>
+                      <Spinner animation="border" size="sm" className="mr-2" />{" "}
+                      Please wait...
+                    </>
+                  ) : (
+                    "Sign Up"
+                  )}
                 </button>
               </Form>
-           </Col>
-          <Col className="p-5 ml-3">
-            <h1 className="font-weight-bold">Welcome !!!!!</h1>
-            <h2>Waiting to serve you</h2>
-          </Col>
-        </Row>
-        <Row>
-          <button
-            onClick={moveToLogin}
-            className="btnColor d-flex align-item-center"
-          >
-            Already have an Account? Log In
-          </button>
-        </Row>
-      </Container>
-    </div>
-  );
-}
+            </Col>
+            <Col className="p-5 ml-3">
+              <h1 className="font-weight-bold">Welcome !!!!!</h1>
+              <h2>Waiting to serve you</h2>
+            </Col>
+          </Row>
+          <Row>
+            <button
+              onClick={moveToLogin}
+              className="btnColor d-flex align-item-center"
+            >
+              Already have an Account? Log In
+            </button>
+          </Row>
+        </Container>
+      </div>
+    );
+  };
 
 export default SignUp;

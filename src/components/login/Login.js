@@ -1,16 +1,13 @@
-import { Container, Row, Col, Form } from "react-bootstrap";
+import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import "./login.css";
 import React, { useState } from "react";
-
-
-
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   function onInputChange(e) {
@@ -21,10 +18,11 @@ function Login() {
       setPassword(value);
     }
   }
+
   function moveToSignup() {
     navigate("/signup");
   }
- 
+
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     if (email === "" || password === "") {
@@ -34,6 +32,8 @@ function Login() {
       });
       return;
     }
+    setIsLoading(true);
+
     try {
       const response = await fetch(
         "https://crm-backend-fpru.onrender.com/crmapp/api/v1/auth/signin",
@@ -47,20 +47,18 @@ function Login() {
       );
       const data = await response.json();
 
-      if (data.status === 201) {    
+      if (data.status === 201) {
         localStorage.setItem("token", data.Message.token);
-        localStorage.setItem("name",data.Message.user.name);
-        localStorage.setItem("email",data.Message.user.email);
-        localStorage.setItem("userType",data.Message.user.userType)
-       
+        localStorage.setItem("name", data.Message.user.name);
+        localStorage.setItem("email", data.Message.user.email);
+        localStorage.setItem("userType", data.Message.user.userType);
+
         Swal.fire({
           title: "Welcome!",
           text: "Successfully Signed-up & Authenticated",
           icon: "success",
-        }).then(() => { 
-             
+        }).then(() => {
           navigate("/");
-    
         });
       } else {
         Swal.fire({
@@ -71,29 +69,28 @@ function Login() {
       }
     } catch (error) {
       console.error("Error sending login request:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
-
-
-  return (
-    <div className="backgroundImage">
-      <Container>
-        <Row
-          style={{
-            fontSize: "3rem",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <div className="mt-5 black font-weight-bold text-center">Log In</div>
-        </Row>
-        <Row className="mt-5 border p-5 xs={12} md={6}">
-          <Col className="text-start">
-           
+    return (
+      <div className="backgroundImage">
+        <Container>
+          <Row
+            style={{
+              fontSize: "3rem",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <div className="mt-5 black font-weight-bold text-center">Log In</div>
+          </Row>
+          <Row className="mt-5 border p-5 xs={12} md={6}">
+            <Col className="text-start">
               <Form onSubmit={handleLoginSubmit}>
-                <Form.Group className="mb-4 black font-weight-bold ">
+                <Form.Group className="mb-4 black font-weight-bold">
                   <Form.Label
-                    className="text-start "
+                    className="text-start"
                     style={{ fontSize: "1.4rem" }}
                   >
                     Email Address
@@ -122,32 +119,40 @@ function Login() {
                     autoComplete="user-password"
                   />
                 </Form.Group>
-
+    
                 <button
                   type="submit"
                   className="btnColor d-flex align-item-center"
+                  disabled={isLoading} // Disable button while loading
                 >
-                  Log In
+                  {isLoading ? (
+                    <>
+                      <Spinner animation="border" size="sm" className="mr-2" />{" "}
+                      Please wait...
+                    </>
+                  ) : (
+                    "Log In"
+                  )}
                 </button>
               </Form>
-            
-          </Col>
-          <Col className="p-5 ml-3">
-            <h1 className="font-weight-bold">Welcome Back!!!!!</h1>
-            <h2>Waiting to serve you</h2>
-          </Col>
-        </Row>
-        <Row>
-          <button
-            onClick={moveToSignup}
-            className="btnColor d-flex align-item-center"
-          >
-            Don't have an Account? Sign Up
-          </button>
-        </Row>
-      </Container>
-    </div>
-  );
+            </Col>
+            <Col className="p-5 ml-3">
+              <h1 className="font-weight-bold">Welcome Back!!!!!</h1>
+              <h2>Waiting to serve you</h2>
+            </Col>
+          </Row>
+          <Row>
+            <button
+              onClick={moveToSignup}
+              className="btnColor d-flex align-item-center"
+            >
+              Don't have an Account? Sign Up
+            </button>
+          </Row>
+        </Container>
+      </div>
+    );   
+  
 }
 
 export default Login;

@@ -10,4 +10,25 @@
 
   
   }
+.homePAgeLogo{
+  min-height: 200px;
+  min-width: 200px;
+  height: 40rem;
+  width: 40rem;
+  margin: 2rem;
+  border-radius: 2rem;
+  opacity: 0;
+  animation: fadeIn 7s ease-in-out infinite;
+}
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
