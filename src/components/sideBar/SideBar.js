@@ -5,6 +5,7 @@ import { FaUsers, FaUserAlt } from "react-icons/fa";
 import { MdDashboard,MdCreateNewFolder ,MdAssignmentInd} from "react-icons/md";
 import { BsTicketFill } from "react-icons/bs";
 import "../../App.css"
+import axios from "axios";
 
 function SideBar({
   setShowTicketCards,
@@ -12,7 +13,7 @@ function SideBar({
   setShowUserProfile,
   setShowUserRecords,
   setAssignedTicketsRecords,
-  setCreatedTicketsRecords
+  setCreatedTicketsRecords,setShowUserModal,setRowUser
 }) {
   const [isAdmin, setIsAdmin] = useState(false);
   let role = localStorage.getItem("userType");
@@ -57,6 +58,7 @@ function SideBar({
     setShowUserProfile(true);
     setAssignedTicketsRecords(false);
     setCreatedTicketsRecords(false);
+    
   }
 
   function handleAssignedTickets(){
@@ -77,6 +79,7 @@ function SideBar({
     setAssignedTicketsRecords(false);
     setCreatedTicketsRecords(true);
   }
+
 
   return (
     <div className="sidebarContainer darkBlue">

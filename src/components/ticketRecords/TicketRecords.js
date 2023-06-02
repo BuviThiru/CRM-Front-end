@@ -4,12 +4,11 @@ import ExportCsv from "@material-table/exporters/csv";
 import ExportPdf from "@material-table/exporters/pdf";
 
 function TicketRecords({tickets,setRowTicket,setShowEditTicketModal}) {
-// console.log("TICKETS", tickets)
+
   return (
     <div>
            <MaterialTable
-            onRowClick={(event, rowData) => {
-            
+            onRowClick={(event, rowData) => {            
               setRowTicket(rowData);
               setShowEditTicketModal(true);
             }}

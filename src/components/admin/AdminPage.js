@@ -226,7 +226,9 @@ function AdminPage() {
             setShowUserProfile,
             setShowUserRecords,
             setAssignedTicketsRecords,
-            setCreatedTicketsRecords
+            setCreatedTicketsRecords,
+            setShowUserModal,
+            setRowUser
           }}
         />
       </div>
@@ -305,13 +307,14 @@ function AdminPage() {
             updateTicket={updateTicket}
           />
         </div>
-        <div className="sideBarContainer p-5"> {showUserProfile && <UserPRofile />}</div>
+        <div className="sideBarContainer p-5"> {showUserProfile && <UserPRofile   setShowUserModal={setShowUserModal} setRowUser={setRowUser} />}</div>
         <EditUserModal
           showUserModal={showUserModal}
           closeUserModal={closeUserModal}
           rowUser={rowUser}
           changeUserDetails={changeUserDetails}
           updateUser={updateUser}
+         
         />
       </div>
     

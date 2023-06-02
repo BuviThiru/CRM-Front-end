@@ -12,5 +12,6 @@ export const getAllusers = async () => {
       return response.data.Users;
     } catch (error) {
       // Handle error
+      console.log(error)
     }
   };

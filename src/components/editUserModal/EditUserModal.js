@@ -4,6 +4,8 @@ import { ModalHeader, ModalTitle } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 
 function EditUserModal({showUserModal,closeUserModal,rowUser,changeUserDetails,updateUser}) {
+  console.log(rowUser)
+  const isUserTypeAdmin = localStorage.getItem("userType") === "Admin";
   return (
     <Modal show={showUserModal} onHide={closeUserModal}>
     <ModalHeader closeButton>
@@ -44,6 +46,7 @@ function EditUserModal({showUserModal,closeUserModal,rowUser,changeUserDetails,u
             name="userType"
             value={rowUser.userType}
             onChange={changeUserDetails}
+            disabled={!isUserTypeAdmin}
           >
             <option value="Customer">Customer</option>
             <option value="Engineer">Engineer</option>
@@ -59,6 +62,7 @@ function EditUserModal({showUserModal,closeUserModal,rowUser,changeUserDetails,u
             name="userStatus"
             value={rowUser.userStatus}
             onChange={changeUserDetails}
+            disabled={!isUserTypeAdmin}
           >
             <option value="pending">Pending</option>
             <option value="approved">Approved</option>

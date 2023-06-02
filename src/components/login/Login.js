@@ -46,8 +46,10 @@ function Login() {
         }
       );
       const data = await response.json();
+      console.log(data)
 
       if (data.status === 201) {
+        localStorage.setItem("id", data.Message.user._id);
         localStorage.setItem("token", data.Message.token);
         localStorage.setItem("name", data.Message.user.name);
         localStorage.setItem("email", data.Message.user.email);
