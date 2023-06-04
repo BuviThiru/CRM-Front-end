@@ -4,6 +4,7 @@ import "./sidebar.css";
 import { FaUsers, FaUserAlt } from "react-icons/fa";
 import { MdDashboard,MdCreateNewFolder ,MdAssignmentInd} from "react-icons/md";
 import { BsTicketFill } from "react-icons/bs";
+import {IoIosCreate} from "react-icons/io"
 import "../../App.css"
 import axios from "axios";
 
@@ -13,7 +14,7 @@ function SideBar({
   setShowUserProfile,
   setShowUserRecords,
   setAssignedTicketsRecords,
-  setCreatedTicketsRecords,setShowUserModal,setRowUser
+  setCreatedTicketsRecords,setShowCreateTicketModal
 }) {
   const [isAdmin, setIsAdmin] = useState(false);
   let role = localStorage.getItem("userType");
@@ -80,6 +81,16 @@ function SideBar({
     setCreatedTicketsRecords(true);
   }
 
+  function handleCreateTicket(){
+    setShowTicketCards(false);
+    setShowUserRecords(false);
+    setShowTicketRecords(false);
+    setShowUserProfile(false);
+    setAssignedTicketsRecords(false);
+    setCreatedTicketsRecords(false);
+    setShowCreateTicketModal(true)
+  }
+
 
   return (
     <div className="sidebarContainer darkBlue">
@@ -106,7 +117,7 @@ function SideBar({
 
       <div className="my-3 cursor-pointer bold" onClick={handleCreatedTickets}>
         <span className="mr-2 cursor-pointer">
-          <MdCreateNewFolder/>
+          <IoIosCreate/>
         </span>
              Created Tickets
       </div>
@@ -124,7 +135,17 @@ function SideBar({
         </span>
         My Profile
       </div>
+
+
+      <div className="my-3 cursor-pointer" onClick={handleCreateTicket}>
+        <span className="mr-2 ">
+          <MdCreateNewFolder />
+        </span>
+        Create Ticket
+      </div>
+      
     </div>
+    
   );
 }
 export default SideBar;

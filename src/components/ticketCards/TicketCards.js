@@ -19,7 +19,7 @@ const TicketCard = (props) =>{
                     </div>
                     <div className="col">
                         <div style={{ width: 50, height: 50 }}>
-                            <CircularProgressbar value={props.percentage} text={`${props.percentage}%`} styles={buildStyles({
+                            <CircularProgressbar value={props.percentage} text={`${parseInt(props.percentage)}%`} styles={buildStyles({
                                     textColor: 'black',
                                     pathColor: 'white',
                                     trailColor: 'black',

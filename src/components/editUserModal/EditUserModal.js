@@ -4,7 +4,7 @@ import { ModalHeader, ModalTitle } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 
 function EditUserModal({showUserModal,closeUserModal,rowUser,changeUserDetails,updateUser}) {
-  console.log(rowUser)
+  
   const isUserTypeAdmin = localStorage.getItem("userType") === "Admin";
   return (
     <Modal show={showUserModal} onHide={closeUserModal}>

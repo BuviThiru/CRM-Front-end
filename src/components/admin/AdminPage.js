@@ -14,6 +14,7 @@ import EditTicketModal from "../editTicketModal/EditTicketModal";
 import SideBar from "../sideBar/SideBar";
 import UserPRofile from "../userProfile/UserPRofile";
 import './admin.css'
+import CreateTicketModal from "../createTicket/CreateTicket";
 
 function AdminPage() {
   const [allUser, setAllUser] = useState([]);
@@ -43,6 +44,7 @@ function AdminPage() {
   const [createdTicketsRecord, setCreatedTicketsRecords] = useState(false);
   const [assignedTickets,setAssignedTickets]= useState([]);
   const [createdTickets, setCreatedTickets]= useState([])
+  const [showCreateTicketModal, setShowCreateTicketModal] =useState(false)
   const userType = localStorage.getItem("userType")
  useEffect(()=>{
   getMyAssignedTickets();
@@ -165,14 +167,24 @@ function AdminPage() {
   };
 
   const updateUser = async () => {
+    let selfId = localStorage.getItem("id")
     let updatedUser = {
       id: rowUser._id,
       name: rowUser.name,
       email: rowUser.email,
       userType: rowUser.userType,
       userStatus: rowUser.userStatus,
-    };
-    axios.patch(BASE_URL + "/user/updateUser", updatedUser);
+    } 
+    
+    let response = await axios.patch(BASE_URL + `/user/updateUser/${selfId}`, updatedUser);
+    let data = response.data.message
+    let token = response.data.token
+    if(selfId===rowUser._id){
+      localStorage.setItem("name",data.name);
+      localStorage.setItem("email",data.email);
+      localStorage.setItem("token",token)
+    }
+  
     const users = await getAllusers();
     setAllUser(users);
     setShowUserModal(false);
@@ -215,6 +227,9 @@ function AdminPage() {
   function closeEditTicketModal() {
     setShowEditTicketModal(false);
   }
+  function closeCreateTicketModal(){
+    setShowCreateTicketModal(false)
+  }
 
   return (
     <div className="d-flex  mainPageContainer">
@@ -227,10 +242,12 @@ function AdminPage() {
             setShowUserRecords,
             setAssignedTicketsRecords,
             setCreatedTicketsRecords,
-            setShowUserModal,
-            setRowUser
+            setShowCreateTicketModal
           }}
         />
+      </div>
+      <div>
+        {showCreateTicketModal && <CreateTicketModal {...{showCreateTicketModal,closeCreateTicketModal,changeTicketDetails}} />}
       </div>
       <div className="adminContainer">
         {showTicketRecords && (
