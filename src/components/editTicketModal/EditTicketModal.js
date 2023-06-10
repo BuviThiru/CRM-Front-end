@@ -29,7 +29,7 @@ function EditTicketModal({showEditTicketModal,closeEditTicketModal,rowTicket,cha
         </div>
         <div className="input-group mb-3">
           <label className="label input-group-text label-md">Description</label>
-          <input
+          < textarea
             type="description"
             className="form-control"
             name="description"

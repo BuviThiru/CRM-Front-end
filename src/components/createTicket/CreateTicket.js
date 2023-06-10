@@ -12,10 +12,8 @@ function CreateTicketModal({showCreateTicketModal,closeCreateTicketModal,changeT
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setNewTicket((prevTicket) => {
-   
-        return { ...prevTicket, [name]: value };
-      
+    setNewTicket((prevTicket) => {   
+        return { ...prevTicket, [name]: value };      
     });
   };
 
@@ -44,12 +42,13 @@ function CreateTicketModal({showCreateTicketModal,closeCreateTicketModal,changeT
         </div>
         <div className="input-group mb-3">
           <label className="label input-group-text label-md">Description</label>
-          <input
+          <textarea
             type="description"
             className="form-control"
             name="description"
             value={newTicket.description || ''}
             onChange={handleInputChange}
+        
           />
         </div>
         <div className="input-group mb-3">

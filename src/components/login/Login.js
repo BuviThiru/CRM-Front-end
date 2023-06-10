@@ -46,7 +46,7 @@ function Login() {
         }
       );
       const data = await response.json();
-      console.log(data)
+      // console.log(data)
 
       if (data.status === 201) {
         localStorage.setItem("id", data.Message.user._id);
@@ -54,7 +54,7 @@ function Login() {
         localStorage.setItem("name", data.Message.user.name);
         localStorage.setItem("email", data.Message.user.email);
         localStorage.setItem("userType", data.Message.user.userType);
-
+      
         Swal.fire({
           title: "Welcome!",
           text: "Successfully Signed-up & Authenticated",
