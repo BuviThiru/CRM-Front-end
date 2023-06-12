@@ -57,10 +57,11 @@ function SignUp() {
         const data1 = await response.json();
 
         if (data1.status === 201) {
-          localStorage.setItem("token", data1.Message.token);
-          console.log(data1.Message.user);
+          localStorage.setItem("token", data1.Message.token);      
           localStorage.setItem("name", data1.Message.user.name);
           localStorage.setItem("email", data1.Message.user.email);
+          localStorage.setItem("userType", data1.Message.user.userType);
+          localStorage.setItem("clientName", data1.Message.user.clientName);
           localStorage.setItem("userType", data1.Message.user.userType);
           Swal.fire({
             title: "Welcome!",

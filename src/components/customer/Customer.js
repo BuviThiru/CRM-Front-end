@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./admin.css";
+
 import axios from "axios";
 import BASE_URL from "../../utils/urls";
 import TicketCard from "../ticketCards/TicketCards";
@@ -13,10 +13,10 @@ import TicketRecords from "../ticketRecords/TicketRecords";
 import EditTicketModal from "../editTicketModal/EditTicketModal";
 import SideBar from "../sideBar/SideBar";
 import UserPRofile from "../userProfile/UserPRofile";
-import './admin.css'
+
 import CreateTicketModal from "../createTicket/CreateTicket";
 
-function AdminPage() {
+function CustomerPage() {
   const [allUser, setAllUser] = useState([]);
   const [tickets, setTickets] = useState([]);
   const [cardData, setCardData] = useState([]);
@@ -45,7 +45,9 @@ function AdminPage() {
   const [assignedTickets,setAssignedTickets]= useState([]);
   const [createdTickets, setCreatedTickets]= useState([])
   const [showCreateTicketModal, setShowCreateTicketModal] =useState(false)
-  const userType = localStorage.getItem("userType")
+  const userType = localStorage.getItem("userType");
+  const [clientTickets, setClientTickets] =useState([])
+
  useEffect(()=>{
   getMyAssignedTickets();
   getMyCreatedTickets();
@@ -61,18 +63,7 @@ function AdminPage() {
   useEffect(() => {
     getAllTickets();
   }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const user = await getAllusers();
-        setAllUser(user);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, []);
+ 
 
   async function getMyAssignedTickets() {
     try {
@@ -104,15 +95,16 @@ function AdminPage() {
     }
   }
 
-  const getAllTickets = async () => {
+  const getAllTicketsByClient = async () => {
     try {
-      let response = await axios.get(BASE_URL + "/tickets/gettickets");
+        const clientName = localStorage.getItem("clientName")
+      let response = await axios.get(BASE_URL + `v1/tickets/getByClient/${clientName}`);
    
       const ticketsWithIds = response.data.Tickets.map((ticket, index) => ({
         ...ticket,
         id: index + 1, // Generate a unique id for each ticket
       }));
-      setTickets(ticketsWithIds);
+      setClientTickets(ticketsWithIds);
     } catch (error) {
       console.log(error);
     }
@@ -152,12 +144,7 @@ function AdminPage() {
     }
     setCardData(cardData);
   };
-  const changeUserDetails = (event) => {
-    const { name, value } = event.target;
-    rowUser[name] = value;
-    setRowUser(rowUser);
-    setShowUserModal(event.target.value);
-  };
+
   const changeTicketDetails = (event) => {
     const { name, value } = event.target;
 
@@ -331,7 +318,7 @@ function AdminPage() {
           showUserModal={showUserModal}
           closeUserModal={closeUserModal}
           rowUser={rowUser}
-          changeUserDetails={changeUserDetails}
+        //   changeUserDetails={changeUserDetails}
           updateUser={updateUser}
          
         />
@@ -341,4 +328,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default CustomerPage;

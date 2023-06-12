@@ -7,11 +7,13 @@ import BASE_URL from '../../utils/urls';
 function UserPRofile({setShowUserModal,setRowUser}) {
   let [name,setName] = useState("");
   let [email,setEmail] = useState("");
-  let [userType,setUserType] = useState("")
+  let [userType,setUserType] = useState("");
+  let [clientName, setClientName] =useState("");
     useEffect(() => {
        setName(localStorage.getItem("name")) ;
         setEmail(localStorage.getItem("email"));
-        setUserType(localStorage.getItem("userType")) ;         
+        setUserType(localStorage.getItem("userType")) ; 
+        setClientName(localStorage.getItem("clientName"));        
       }, []); 
 
     
@@ -31,6 +33,7 @@ function UserPRofile({setShowUserModal,setRowUser}) {
         <div> Name : {name}</div>
         <div> Email : {email}</div>
         <div> Role : {userType}</div>
+        <div>Organization : {clientName}</div>
         <button onClick={getUserById}>Edit Profile</button>
     </div>
   )

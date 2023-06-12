@@ -38,6 +38,16 @@ function EditUserModal({showUserModal,closeUserModal,rowUser,changeUserDetails,u
           />
         </div>
         <div className="input-group mb-3">
+          <label className="label input-group-text label-md">Organization</label>
+          <input
+            type="text"
+            className="form-control"
+            name="clientName"
+            value={rowUser.clientName}
+            onChange={changeUserDetails}
+          />
+        </div>
+        <div className="input-group mb-3">
           <label className="label input-group-text label-md">
             User Type
           </label>

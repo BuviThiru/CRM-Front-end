@@ -8,6 +8,7 @@ import NavBar from "../src/components/navbar/Navbar";
 import Footer from "./components/footer/Footer" ;
 
 import AdminPage from "../src/components/admin/AdminPage";
+import CustomerPage from "./components/customer/Customer";
 
 
 function withLayout(Component) { 
@@ -39,6 +40,7 @@ function App() {
           <Navigate to="/login" replace={true}/>
         )} />
         <Route path="/admin"  element= {withLayout(<AdminPage/>)} replace={true}/>
+        <Route path="/customer"  element= {withLayout(<CustomerPage/>)} replace={true}/>
         
       </Routes>
     </Router>

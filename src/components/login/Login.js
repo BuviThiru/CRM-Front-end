@@ -54,6 +54,7 @@ function Login() {
         localStorage.setItem("name", data.Message.user.name);
         localStorage.setItem("email", data.Message.user.email);
         localStorage.setItem("userType", data.Message.user.userType);
+        localStorage.setItem("clientName", data.Message.user.clientName);
       
         Swal.fire({
           title: "Welcome!",
