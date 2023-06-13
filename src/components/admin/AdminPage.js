@@ -24,13 +24,7 @@ function AdminPage() {
   const [ticketsByStatus, setTicketsByStatus] = useState([]);
   const [rowUser, setRowUser] = useState("");
 
-  const ticketStatus = [
-    "open",
-    "inProgress",
-    "resolved",
-    "cancelled",
-    "onHold",
-  ];
+  const ticketStatus = ["open","inProgress","resolved","cancelled","onHold",];
   const ticketCardColor = ["success", "primary", "info", "warning", "light"];
   const [showUserModal, setShowUserModal] = useState(false);
   const [showTicketModal, setShowTicketModal] = useState(false);
@@ -46,21 +40,14 @@ function AdminPage() {
   const [createdTickets, setCreatedTickets]= useState([])
   const [showCreateTicketModal, setShowCreateTicketModal] =useState(false)
   const userType = localStorage.getItem("userType")
- useEffect(()=>{
-  getMyAssignedTickets();
-  getMyCreatedTickets();
- },[])
+
 
   useEffect(() => {
     cardDetails();
   }, [tickets]);
-  useEffect(() => {
-    // getMyAssignedTickets()
-    getTicketsByStatus();
-  }, []);
-  useEffect(() => {
-    getAllTickets();
-  }, []);
+
+
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -70,72 +57,13 @@ function AdminPage() {
         console.log(error);
       }
     };
-
-    fetchData();
-  }, []);
-
-  async function getMyAssignedTickets() {
-    try {
-      let response = await axios.get(BASE_URL + "/tickets/getMyAssignedtickets");
-  
-      const ticketsWithIds = response.data.result.map((ticket, index) => ({
-        ...ticket,
-        id: index + 1, // Generate a unique id for each ticket
-      }));
-      setAssignedTickets(ticketsWithIds);
-    } catch (error) {
-      console.log(error);
-    }
+ if(userType){
+  fetchData();
   }
-  
+    
+  }, [userType]);
 
 
-  async function getMyCreatedTickets(){
-    try {
-      let response = await axios.get(BASE_URL + "/tickets/getMyCreatedtickets");
-     
-      const ticketsWithIds = response.data.result.map((ticket, index) => ({
-        ...ticket,
-        id: index + 1, // Generate a unique id for each ticket
-      }));
-      setCreatedTickets (ticketsWithIds);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const getAllTickets = async () => {
-    try {
-      let response = await axios.get(BASE_URL + "/tickets/gettickets");
-   
-      const ticketsWithIds = response.data.Tickets.map((ticket, index) => ({
-        ...ticket,
-        id: index + 1, // Generate a unique id for each ticket
-      }));
-      setTickets(ticketsWithIds);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const getTicketsByStatus = async () => {
-    try {
-      let res = [];
-      for (let i = 0; i < ticketStatus.length; i++) {
-        const response = await axios.get(
-          BASE_URL + `/tickets/getticketsByStatus/${ticketStatus[i]}`
-        );
-        const ticketsWithId = response.data.Tickets.map((ticket) => ({
-          ...ticket,
-          id: ticket._id, // Add the id property using the existing _id property
-        }));
-        res.push(ticketsWithId);
-      }
-      setTicketsDetails(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const cardDetails = async () => {
     let result = await getTicketsByStatus();
