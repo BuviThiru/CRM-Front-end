@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./sidebar.css";
-
 import { FaUsers, FaUserAlt } from "react-icons/fa";
-import { MdDashboard,MdCreateNewFolder ,MdAssignmentInd} from "react-icons/md";
+import {
+  MdDashboard,
+  MdCreateNewFolder,
+  MdAssignmentInd,
+} from "react-icons/md";
 import { BsTicketFill } from "react-icons/bs";
-import {IoIosCreate} from "react-icons/io"
-import "../../App.css"
-
+import { IoIosCreate } from "react-icons/io";
+import "../../App.css";
 
 function SideBar({
   setShowTicketCards,
   setShowTicketRecords,
   setShowUserProfile,
   setShowUserRecords,
-  setAssignedTicketsRecords,
-  setCreatedTicketsRecords,setShowCreateTicketModal,getTickets
+  setShowCreateTicketModal,
+  getTickets,
 }) {
   const [isAdmin, setIsAdmin] = useState(false);
   let role = localStorage.getItem("userType");
@@ -30,9 +32,7 @@ function SideBar({
     isAdmin ? setShowUserRecords(true) : setShowUserRecords(false);
     setShowTicketRecords(false);
     setShowUserProfile(false);
-  
-   getTickets("all")
-    
+    getTickets("all");
   }
 
   function handleUsersClick() {
@@ -40,7 +40,6 @@ function SideBar({
     setShowUserRecords(true);
     setShowTicketRecords(false);
     setShowUserProfile(false);
-  
   }
 
   function handleTicketsClick(selectedOption) {
@@ -48,7 +47,7 @@ function SideBar({
     setShowUserRecords(false);
     setShowTicketRecords(true);
     setShowUserProfile(false);
-       getTickets("all")
+    getTickets("all");
   }
 
   function handleProfileClick() {
@@ -56,35 +55,31 @@ function SideBar({
     setShowUserRecords(false);
     setShowTicketRecords(false);
     setShowUserProfile(true);
-   
-    
   }
 
-  function handleAssignedTickets(){
+  function handleAssignedTickets() {
     setShowTicketCards(true);
     setShowUserRecords(false);
     setShowTicketRecords(true);
-    setShowUserProfile(false); ;
-    getTickets("assigned")
-
+    setShowUserProfile(false);
+    getTickets("assigned");
   }
 
-  function handleCreatedTickets(){
+  function handleCreatedTickets() {
     setShowTicketCards(true);
     setShowUserRecords(false);
     setShowTicketRecords(true);
-    setShowUserProfile(false);   
-    getTickets("created")
+    setShowUserProfile(false);
+    getTickets("created");
   }
 
-  function handleCreateTicket(){
+  function handleCreateTicket() {
     setShowTicketCards(false);
     setShowUserRecords(false);
     setShowTicketRecords(false);
-    setShowUserProfile(false); 
-    setShowCreateTicketModal(true)
+    setShowUserProfile(false);
+    setShowCreateTicketModal(true);
   }
-
 
   return (
     <div className="sidebarContainer darkBlue">
@@ -102,27 +97,27 @@ function SideBar({
           Users
         </div>
       )}
-        <div className="my-3 cursor-pointer bold" onClick={handleTicketsClick}>
+      <div className="my-3 cursor-pointer bold" onClick={handleTicketsClick}>
         <span className="mr-2 cursor-pointer">
           <BsTicketFill />
         </span>
-     All Tickets
+        All Tickets
       </div>
 
       <div className="my-3 cursor-pointer bold" onClick={handleCreatedTickets}>
         <span className="mr-2 cursor-pointer">
-          <IoIosCreate/>
+          <IoIosCreate />
         </span>
-             Created Tickets
+        Created Tickets
       </div>
 
       <div className="my-3 cursor-pointer bold" onClick={handleAssignedTickets}>
         <span className="mr-2 cursor-pointer">
           <MdAssignmentInd />
         </span>
-             Tickets Assigned
+        Tickets Assigned
       </div>
-    
+
       <div className="my-3 cursor-pointer" onClick={handleProfileClick}>
         <span className="mr-2 ">
           <FaUserAlt />
@@ -130,16 +125,13 @@ function SideBar({
         My Profile
       </div>
 
-
       <div className="my-3 cursor-pointer" onClick={handleCreateTicket}>
         <span className="mr-2 ">
           <MdCreateNewFolder />
         </span>
         Create Ticket
       </div>
-      
     </div>
-    
   );
 }
 export default SideBar;

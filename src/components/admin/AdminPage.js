@@ -45,9 +45,6 @@ function AdminPage() {
   const [showUserRecords, setShowUserRecords] = useState(true);
   const [showTicketRecords, setShowTicketRecords] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
-  const [assignedTicketsRecord, setAssignedTicketsRecords] = useState(false);
-  const [createdTicketsRecord, setCreatedTicketsRecords] = useState(false);
-
   const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
   const userType = localStorage.getItem("userType");
 
@@ -177,7 +174,7 @@ function AdminPage() {
   }
 
   const cardDetails = async (tickets) => {
-    console.log(tickets);
+    // console.log(tickets);
     const ticketData = {};
     for (let i = 0; i < ticketStatus.length; i++) {
       ticketData[ticketStatus[i]] = [];
@@ -225,6 +222,7 @@ function AdminPage() {
           }}
         />
       </div>
+      <div> 
       <div>
           {showTickectCards && (
             <>
@@ -316,6 +314,7 @@ function AdminPage() {
           updateUser={updateUser}
         />
       </div>
+    </div>
     </div>
   );
 }
