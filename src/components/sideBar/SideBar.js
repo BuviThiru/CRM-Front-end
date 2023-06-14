@@ -6,7 +6,7 @@ import { MdDashboard,MdCreateNewFolder ,MdAssignmentInd} from "react-icons/md";
 import { BsTicketFill } from "react-icons/bs";
 import {IoIosCreate} from "react-icons/io"
 import "../../App.css"
-import axios from "axios";
+
 
 function SideBar({
   setShowTicketCards,
@@ -14,7 +14,7 @@ function SideBar({
   setShowUserProfile,
   setShowUserRecords,
   setAssignedTicketsRecords,
-  setCreatedTicketsRecords,setShowCreateTicketModal
+  setCreatedTicketsRecords,setShowCreateTicketModal,getTickets
 }) {
   const [isAdmin, setIsAdmin] = useState(false);
   let role = localStorage.getItem("userType");
@@ -30,8 +30,9 @@ function SideBar({
     isAdmin ? setShowUserRecords(true) : setShowUserRecords(false);
     setShowTicketRecords(false);
     setShowUserProfile(false);
-    setAssignedTicketsRecords(false);
-    setCreatedTicketsRecords(false);
+  
+   getTickets("all")
+    
   }
 
   function handleUsersClick() {
@@ -39,17 +40,15 @@ function SideBar({
     setShowUserRecords(true);
     setShowTicketRecords(false);
     setShowUserProfile(false);
-    setAssignedTicketsRecords(false);
-    setCreatedTicketsRecords(false);
+  
   }
 
   function handleTicketsClick(selectedOption) {
-    setShowTicketCards(false);
+    setShowTicketCards(true);
     setShowUserRecords(false);
     setShowTicketRecords(true);
     setShowUserProfile(false);
-    setAssignedTicketsRecords(false);
-    setCreatedTicketsRecords(false);
+       getTickets("all")
   }
 
   function handleProfileClick() {
@@ -57,37 +56,32 @@ function SideBar({
     setShowUserRecords(false);
     setShowTicketRecords(false);
     setShowUserProfile(true);
-    setAssignedTicketsRecords(false);
-    setCreatedTicketsRecords(false);
+   
     
   }
 
   function handleAssignedTickets(){
-    setShowTicketCards(false);
+    setShowTicketCards(true);
     setShowUserRecords(false);
-    setShowTicketRecords(false);
-    setShowUserProfile(false);
-    setAssignedTicketsRecords(true);
-    setCreatedTicketsRecords(false);
+    setShowTicketRecords(true);
+    setShowUserProfile(false); ;
+    getTickets("assigned")
 
   }
 
   function handleCreatedTickets(){
-    setShowTicketCards(false);
+    setShowTicketCards(true);
     setShowUserRecords(false);
-    setShowTicketRecords(false);
-    setShowUserProfile(false);
-    setAssignedTicketsRecords(false);
-    setCreatedTicketsRecords(true);
+    setShowTicketRecords(true);
+    setShowUserProfile(false);   
+    getTickets("created")
   }
 
   function handleCreateTicket(){
     setShowTicketCards(false);
     setShowUserRecords(false);
     setShowTicketRecords(false);
-    setShowUserProfile(false);
-    setAssignedTicketsRecords(false);
-    setCreatedTicketsRecords(false);
+    setShowUserProfile(false); 
     setShowCreateTicketModal(true)
   }
 

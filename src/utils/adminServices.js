@@ -8,8 +8,12 @@ axios.defaults.headers.common["x-access-token"] = token;
 
 export const getAllusers = async () => {
     try {
-      let response = await axios.get(BASE_URL + "/getallusers");
-      return response.data.Users;
+      let response = await axios.get(BASE_URL + "/getallusers");    
+      const usersWithIds = response.data.Users.map((user, index) => ({
+        ...user,
+        id: index + 1, // Generate a unique id for each ticket
+      }));
+      return usersWithIds;
     } catch (error) {
        console.log(error)
     }
