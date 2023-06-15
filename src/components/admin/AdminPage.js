@@ -55,8 +55,10 @@ function AdminPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if(userType==="Admin") { 
         const user = await getAllusers();
-        setAllUser(user);
+        setAllUser(user);}
+        else return;
       } catch (error) {
         console.log(error);
       }

@@ -7,8 +7,8 @@ function Home() {
 const navigate = useNavigate()
 const userType = localStorage.getItem("userType")
   const handleButtonClick = () => {
-    if(userType === "Customer")  navigate('/customer')
-    else navigate('/admin')
+    // if(userType === "Customer")  navigate('/customer')
+     navigate('/admin')
   };
 
   return (
