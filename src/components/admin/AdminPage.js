@@ -48,9 +48,7 @@ function AdminPage() {
   const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
   const userType = localStorage.getItem("userType");
 
-  // useEffect(() => {
-  //   cardDetails();
-  // }, [tickets]);
+
 
   useEffect(() => {
     const fetchData = async () => {
