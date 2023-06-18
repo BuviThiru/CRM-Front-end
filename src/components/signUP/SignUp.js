@@ -177,6 +177,24 @@ function SignUp() {
                   </Form.Control>
                 </Form.Group>
 
+                <Form.Group className="mb-4 black font-weight-bold">
+                  <Form.Label
+                    className="text-start"
+                    style={{ fontSize: "1.4rem" }}
+                  >
+                    Organization
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    className="black"
+                    placeholder="Enter your organization"
+                    value={user.clientName}
+                    name="clientName"
+                    onChange={handleInputChange}
+                  />
+                </Form.Group>
+                
+
                 <button
                   type="submit"
                   className="btnColor d-flex align-item-center"

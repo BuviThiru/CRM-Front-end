@@ -20,13 +20,13 @@ import SideBar from "../sideBar/SideBar";
 import UserPRofile from "../userProfile/UserPRofile";
 import "./admin.css";
 import CreateTicketModal from "../createTicket/CreateTicket";
+import Swal from "sweetalert2";
 
 function AdminPage() {
   const [allUser, setAllUser] = useState([]);
   const [tickets, setTickets] = useState([]);
   const [cardData, setCardData] = useState([]);
-  const [ticketsDetails, setTicketsDetails] = useState([]);
-  const [ticketsByStatus, setTicketsByStatus] = useState([]);
+  // const [ticketsByStatus, setTicketsByStatus] = useState([]);
   const [rowUser, setRowUser] = useState("");
 
   const ticketStatus = [
@@ -123,12 +123,24 @@ function AdminPage() {
         BASE_URL + `/tickets/updateTicket/${rowTicket._id}`,
         updatedTicketObj
       );
-      await getAllTickets();
+    
       setShowEditTicketModal(false);
-      if (response.data.result) alert("update successful");
+      if (response.data.result) {
+        Swal.fire({
+          title: "Update Result",
+          text: "Successfully updated",
+          icon: "success",
+        })
+      }
+     
     } catch (err) {
       console.log(err);
-      alert(err?.response?.data?.result);
+      Swal.fire({
+        title: "Sorry!",
+        text: `${err?.response?.data?.result}`,
+        icon: "error",
+      });
+
     }
   };
 
@@ -271,7 +283,7 @@ function AdminPage() {
           <TicketByStatusModal
             showTicketModal={showTicketModal}
             closeTicketModal={closeTicketModal}
-            ticketsByStatus={ticketsByStatus}
+            // ticketsByStatus={ticketsByStatus}
           />
         </div>
         

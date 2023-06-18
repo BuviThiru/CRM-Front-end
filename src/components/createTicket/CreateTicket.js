@@ -5,6 +5,7 @@ import { ModalHeader, ModalTitle } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 import BASE_URL from '../../utils/urls';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function CreateTicketModal({showCreateTicketModal,closeCreateTicketModal,changeTicketDetails}) {
   const [newTicket, setNewTicket] = useState ({});
@@ -18,8 +19,27 @@ function CreateTicketModal({showCreateTicketModal,closeCreateTicketModal,changeT
   };
 
   async function createTicket(){
-    const response = await axios.post(BASE_URL + '/tickets/createticket',{...newTicket})
-    console.log(response)
+    try{
+      const response = await axios.post(BASE_URL + '/tickets/createticket',{...newTicket})
+    
+    if(response.status === 200){
+      Swal.fire({
+        title: "Result",
+        text: `${response?.data?.success}`,
+        icon: "success",
+      })
+    }else{
+      console.log(response.data.error)
+      
+    }
+    }catch(err){
+      const error = err.response.data.error;
+      Swal.fire({
+        title: "Result",
+        text: `${error}`,
+        icon: "error",
+      })
+    }
   }
   return (
     <Modal show={showCreateTicketModal} onHide={closeCreateTicketModal}>

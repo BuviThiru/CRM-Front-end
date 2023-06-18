@@ -4,7 +4,7 @@ import { ModalHeader, ModalTitle } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 
 function EditTicketModal({showEditTicketModal,closeEditTicketModal,rowTicket,changeTicketDetails,updateTicket}) {
-
+let userType = localStorage.getItem("userType")
   return (
     <Modal show={showEditTicketModal} onHide={closeEditTicketModal}>
     <ModalHeader closeButton>
@@ -47,7 +47,7 @@ function EditTicketModal({showEditTicketModal,closeEditTicketModal,rowTicket,cha
             onChange={changeTicketDetails}
           />
         </div>
-        <div className="input-group mb-3">
+        {userType === "Customer"?<div></div>:<div className="input-group mb-3">
           <label className="label input-group-text label-md">
             Ticket Priority
           </label>
@@ -63,7 +63,7 @@ function EditTicketModal({showEditTicketModal,closeEditTicketModal,rowTicket,cha
             <option value="3">3</option>
             <option value="4">4</option>
           </select>
-        </div>
+        </div>}
         <div className="input-group mb-3">
           <label className="label input-group-text label-md">
             Status
@@ -114,6 +114,7 @@ function EditTicketModal({showEditTicketModal,closeEditTicketModal,rowTicket,cha
             name="assignedTo"
             value={rowTicket.assignedTo}
             onChange={changeTicketDetails}
+            disabled = {userType === "Customer"}
           />           
         </div>
         
