@@ -1,9 +1,9 @@
 import React from 'react'
 import Modal from "react-bootstrap/Modal";
-import { ModalHeader, ModalTitle } from "react-bootstrap";
+import { ModalHeader, ModalTitle, Spinner } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 
-function EditUserModal({showUserModal,closeUserModal,rowUser,changeUserDetails,updateUser}) {
+function EditUserModal({isLoading, showUserModal,closeUserModal,rowUser,changeUserDetails,updateUser}) {
   
   const isUserTypeAdmin = localStorage.getItem("userType") === "Admin";
   return (
@@ -109,8 +109,13 @@ function EditUserModal({showUserModal,closeUserModal,rowUser,changeUserDetails,u
       <Button variant="secondary" onClick={closeUserModal}>
         Close
       </Button>
-      <Button variant="primary" onClick={updateUser}>
-        Save
+      <Button variant="primary" onClick={updateUser} disabled={isLoading}>
+      {isLoading? (
+             <>
+             <Spinner animation="border" size="sm" className="mr-2" />{" "}
+             Please wait...
+           </>
+        ):"Save"}
       </Button>
     </Modal.Footer>
   </Modal>

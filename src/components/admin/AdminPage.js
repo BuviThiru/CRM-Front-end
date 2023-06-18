@@ -28,6 +28,7 @@ function AdminPage() {
   const [cardData, setCardData] = useState([]);
   // const [ticketsByStatus, setTicketsByStatus] = useState([]);
   const [rowUser, setRowUser] = useState("");
+  const [updateTicketLoading,setUpdateTicketLoading] = useState(false)
 
   const ticketStatus = [
     "open",
@@ -46,14 +47,15 @@ function AdminPage() {
   const [showTicketRecords, setShowTicketRecords] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
+  const [ updateUserLoading, setUpdateUserLoading] = useState(false)
   const userType = localStorage.getItem("userType");
 
 
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        if(userType==="Admin") { 
+      try {       
+        if(userType==="Admin") {       
         const user = await getAllusers();
         setAllUser(user);}
         else return;
@@ -81,7 +83,9 @@ function AdminPage() {
   };
 
   const updateUser = async () => {
-    let selfId = localStorage.getItem("id");
+    try{
+      setUpdateUserLoading(true)
+      let selfId = localStorage.getItem("id");
     let updatedUser = {
       id: rowUser._id,
       name: rowUser.name,
@@ -95,6 +99,7 @@ function AdminPage() {
       BASE_URL + `/user/updateUser/${selfId}`,
       updatedUser
     );
+    console.log(response)
     let data = response.data.message;
     let token = response.data.token;
     if (selfId === rowUser._id) {
@@ -107,10 +112,16 @@ function AdminPage() {
     const users = await getAllusers();
     setAllUser(users);
     setShowUserModal(false);
+    }catch(err){
+      console.log(err)
+    }finally{
+      setUpdateUserLoading(false)
+    }
   };
 
-  const updateTicket = async () => {
+  const updateTicket = async () => {   
     try {
+      setUpdateTicketLoading(true)
       let updatedTicketObj = {
         id: rowTicket._id,
         title: rowTicket.title,
@@ -141,6 +152,8 @@ function AdminPage() {
         icon: "error",
       });
 
+    } finally{
+      setUpdateTicketLoading(false)
     }
   };
 
@@ -307,6 +320,7 @@ function AdminPage() {
             rowTicket={rowTicket}
             changeTicketDetails={changeTicketDetails}
             updateTicket={updateTicket}
+            isLoading = {updateTicketLoading}
           />
         </div>
         <div className="sideBarContainer p-5">
@@ -324,6 +338,7 @@ function AdminPage() {
           rowUser={rowUser}
           changeUserDetails={changeUserDetails}
           updateUser={updateUser}
+          isLoading = {updateUserLoading}
         />
       </div>
     </div>

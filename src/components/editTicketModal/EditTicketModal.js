@@ -1,9 +1,9 @@
 import React from 'react'
 import Modal from "react-bootstrap/Modal";
-import { ModalHeader, ModalTitle } from "react-bootstrap";
+import { ModalHeader, ModalTitle, Spinner } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 
-function EditTicketModal({showEditTicketModal,closeEditTicketModal,rowTicket,changeTicketDetails,updateTicket}) {
+function EditTicketModal({isLoading,showEditTicketModal,closeEditTicketModal,rowTicket,changeTicketDetails,updateTicket}) {
 let userType = localStorage.getItem("userType")
   return (
     <Modal show={showEditTicketModal} onHide={closeEditTicketModal}>
@@ -124,8 +124,13 @@ let userType = localStorage.getItem("userType")
       <Button variant="secondary" onClick={closeEditTicketModal}>
         Close
       </Button>
-      <Button variant="primary" onClick={updateTicket}>
-        Save
+      <Button variant="primary" onClick={updateTicket} disabled={isLoading}>
+        {isLoading? (
+             <>
+             <Spinner animation="border" size="sm" className="mr-2" />{" "}
+             Please wait...
+           </>
+        ):"Save"}
       </Button>
     </Modal.Footer>
   </Modal>
