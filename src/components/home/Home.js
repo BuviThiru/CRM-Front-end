@@ -5,10 +5,10 @@ import homePageLogo from '../../assets/crmHomePAge.png'
 
 function Home() {
 const navigate = useNavigate()
-const userType = localStorage.getItem("userType")
+
   const handleButtonClick = () => {
-    // if(userType === "Customer")  navigate('/customer')
-     navigate('/admin')
+ 
+     navigate('/mainpage')
   };
 
   return (

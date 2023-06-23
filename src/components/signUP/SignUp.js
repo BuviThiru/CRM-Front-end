@@ -28,6 +28,7 @@ function SignUp() {
         text: "Enter all fields!!",
         icon: "warning",
       });
+      setIsLoading(false)
       return;
     }
     try {
@@ -63,35 +64,43 @@ function SignUp() {
           localStorage.setItem("userType", data1.Message.user.userType);
           localStorage.setItem("clientName", data1.Message.user.clientName);
           localStorage.setItem("userType", data1.Message.user.userType);
+          navigate("/");
           Swal.fire({
             title: "Welcome!",
             text: "Successfully Signed-up & Authenticated",
             icon: "success",
-          }).then(() => {
-            navigate("/");
-          });
+          })
+        
+          
         } else {
           Swal.fire({
             title: "Sorry!",
             text: `${data.Message}`,
             icon: "error",
           });
+         
         }
+    
       } else {
         Swal.fire({
           title: "Sorry!",
           text: `${data.Message}`,
           icon: "error",
         });
+     
       }
+   
     } catch (error) {
       console.error("Error sending login request:", error);
       Swal.fire({
         title: "Sorry!",
         text: `${error}`,
         icon: "error",
+        
       });
-    } finally {
+    
+     }   
+    finally {
       setIsLoading(false); // Stop loading
     }}
 
