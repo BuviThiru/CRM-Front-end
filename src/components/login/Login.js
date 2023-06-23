@@ -30,6 +30,7 @@ function Login() {
         text: "All fields are mandatory",
         icon: "warning",
       });
+   
       return;
     }
     setIsLoading(true);
@@ -60,9 +61,9 @@ function Login() {
           title: "Welcome!",
           text: "Successfully Signed-up & Authenticated",
           icon: "success",
-        }).then(() => {
-          navigate("/");
-        });
+        })
+        navigate("/");
+        // return;
       } else {
         Swal.fire({
           title: "Sorry!",

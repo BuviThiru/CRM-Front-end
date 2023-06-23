@@ -7,7 +7,7 @@ import Home from "../src/components/home/Home";
 import NavBar from "../src/components/navbar/Navbar";
 import Footer from "./components/footer/Footer" ;
 
-import AdminPage from "../src/components/admin/AdminPage";
+import MainPage from "./components/admin/MainPage";
 
 
 
@@ -26,7 +26,7 @@ function withLayout(Component) {
 
 function App() {
   const token = localStorage.getItem("token");
-  const userType = localStorage.getItem("userType")
+
 
  
   return (
@@ -39,7 +39,7 @@ function App() {
         ) : (
           <Navigate to="/login" replace={true}/>
         )} />
-        <Route path="/admin"  element= {withLayout(<AdminPage/>)} replace={true}/>
+        <Route path="/mainpage"  element= {withLayout(<MainPage/>)} replace={true}/>
         
         
       </Routes>

@@ -5,12 +5,7 @@ import BASE_URL from "../../utils/urls";
 import TicketCard from "../ticketCards/TicketCards";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import {
-  getAllTickets,
-  getAllusers,
-  getMyAssignedTickets,
-  getMyCreatedTickets,
-} from "../../utils/adminServices";
+import {getAllTickets, getAllusers, getMyAssignedTickets,getMyCreatedTickets} from "../../utils/adminServices";
 import UserRecords from "../userRecords/UserRecords";
 import EditUserModal from "../editUserModal/EditUserModal";
 import TicketByStatusModal from "../ticketByStatusModal.js/TicketByStatusModal";
@@ -22,21 +17,14 @@ import "./admin.css";
 import CreateTicketModal from "../createTicket/CreateTicket";
 import Swal from "sweetalert2";
 
-function AdminPage() {
+function MainPage() {
   const [allUser, setAllUser] = useState([]);
   const [tickets, setTickets] = useState([]);
   const [cardData, setCardData] = useState([]);
-  // const [ticketsByStatus, setTicketsByStatus] = useState([]);
   const [rowUser, setRowUser] = useState("");
   const [updateTicketLoading,setUpdateTicketLoading] = useState(false)
 
-  const ticketStatus = [
-    "open",
-    "inProgress",
-    "resolved",
-    "cancelled",
-    "onHold",
-  ];
+  const ticketStatus = [ "open","inProgress","resolved", "cancelled","onHold"];
   const ticketCardColor = ["success", "primary", "info", "warning", "light"];
   const [showUserModal, setShowUserModal] = useState(false);
   const [showTicketModal, setShowTicketModal] = useState(false);
@@ -165,7 +153,6 @@ function AdminPage() {
     setShowTicketModal(false);
   }
   function showTicketModalFn(index) {
-    // setTicketsByStatus(ticketsDetails[index]);
     setShowTicketModal(true);
   }
   function closeEditTicketModal() {
@@ -256,7 +243,7 @@ function AdminPage() {
                   return (
                     <div
                       key={index}
-                      className="m-3 d-flex justify-content-center"
+                      className="m-1 d-flex justify-content-center"
                       onClick={() => showTicketModalFn(index)}
                     >
                       <TicketCard {...card} />{" "}
@@ -295,8 +282,7 @@ function AdminPage() {
         <div>
           <TicketByStatusModal
             showTicketModal={showTicketModal}
-            closeTicketModal={closeTicketModal}
-            // ticketsByStatus={ticketsByStatus}
+            closeTicketModal={closeTicketModal}         
           />
         </div>
         
@@ -346,4 +332,4 @@ function AdminPage() {
   );
 }
 
-export default AdminPage;
+export default MainPage;
