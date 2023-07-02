@@ -1,0 +1,55 @@
+
+
+  .shimmer-boxes {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .shimmer-box {
+    width: 10rem;
+    height: 10rem;
+    background: linear-gradient(to right, rgba(171, 170, 170), transparent);
+    /* background:rgb(171, 170, 170); */
+    margin-right: 2rem;
+    animation: shimmer 10s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200px;
+    }
+    100% {
+      background-position: 200px;
+    }
+  }
+
+
+
+  .loading-shimmer {
+    animation: shimmer 10s infinite linear;
+    background: linear-gradient(to right, #eff1f3 4%, #e2e2e2 25%, #eff1f3 36%);
+    /* background-size: 1000px 100%; */
+}
+
+th {
+ text-align: left; 
+}
+
+.table-shimmercontainer{
+    height:50vh;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.line {
+  height: 3rem;
+  width: 70vw;
+  margin: 1rem;
+}

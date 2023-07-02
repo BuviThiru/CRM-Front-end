@@ -16,6 +16,7 @@ import UserPRofile from "../userProfile/UserPRofile";
 import "./admin.css";
 import CreateTicketModal from "../createTicket/CreateTicket";
 import Swal from "sweetalert2";
+import Shimmer from "../shimmer/shimmer";
 
 function MainPage() {
   const [allUser, setAllUser] = useState([]);
@@ -37,15 +38,18 @@ function MainPage() {
   const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
   const [ updateUserLoading, setUpdateUserLoading] = useState(false)
   const userType = localStorage.getItem("userType");
+  const [loading,setLoading] = useState(false)
 
 
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       try {       
         if(userType==="Admin") {       
         const user = await getAllusers();
-        setAllUser(user);}
+        setAllUser(user);
+      setLoading(false)}
         else return;
       } catch (error) {
         console.log(error);
@@ -164,24 +168,26 @@ function MainPage() {
 
   async function getTickets(type) {
     const currentTicketType = type;
+    setLoading(true)
     let response;
     switch (currentTicketType) {
       case "all":
-        response = await getAllTickets();
+        response = await getAllTickets();    
         break;
       case "assigned":
-        response = await getMyAssignedTickets();
+        response = await getMyAssignedTickets();       
         break;
       case "created":
-        response = await getMyCreatedTickets();
+        response = await getMyCreatedTickets();      
         break;
 
       default:
-        response = await getAllTickets();
+        response = await getAllTickets();      
         break;
     }
     setTickets(response);
     cardDetails(response);
+    setLoading(false)
     return response;
   }
 
@@ -234,17 +240,18 @@ function MainPage() {
           }}
         />
       </div>
+     {loading ? <Shimmer/> :  
       <div> 
       <div>
           {showTickectCards && (
             <>
-              <div className="d-flex justify-content-between">
+              <div className="d-flex mr-3">
                 {cardData.map((card, index) => {
                   return (
                     <div
                       key={index}
-                      className="m-1 d-flex justify-content-center"
-                      onClick={() => showTicketModalFn(index)}
+                      className="d-flex m-3 px-3"
+                     
                     >
                       <TicketCard {...card} />{" "}
                     </div>
@@ -327,7 +334,7 @@ function MainPage() {
           isLoading = {updateUserLoading}
         />
       </div>
-    </div>
+    </div>}
     </div>
   );
 }
