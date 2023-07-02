@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './createTicket.css'
 import Modal from "react-bootstrap/Modal";
-import { ModalHeader, ModalTitle } from "react-bootstrap";
+import { ModalHeader, ModalTitle, Spinner } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 import BASE_URL from '../../utils/urls';
 import axios from 'axios';
@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 
 function CreateTicketModal({showCreateTicketModal,closeCreateTicketModal,changeTicketDetails}) {
   const [newTicket, setNewTicket] = useState ({});
- 
+  const [isloading,setIsloading] = useState(false)
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -20,6 +20,7 @@ function CreateTicketModal({showCreateTicketModal,closeCreateTicketModal,changeT
 
   async function createTicket(){
     try{
+      setIsloading(true)
       const response = await axios.post(BASE_URL + '/tickets/createticket',{...newTicket})
     
     if(response.status === 200){
@@ -39,11 +40,14 @@ function CreateTicketModal({showCreateTicketModal,closeCreateTicketModal,changeT
         text: `${error}`,
         icon: "error",
       })
+    }finally {
+      setIsloading(false);
+      closeCreateTicketModal()
     }
   }
   return (
-    <Modal show={showCreateTicketModal} onHide={closeCreateTicketModal}>
-    <ModalHeader closeButton>
+    <Modal size="lg" show={showCreateTicketModal} onHide={closeCreateTicketModal}>
+    <ModalHeader >
       <ModalTitle>Create New Ticket</ModalTitle>
     </ModalHeader>
     <Modal.Body>
@@ -130,11 +134,16 @@ function CreateTicketModal({showCreateTicketModal,closeCreateTicketModal,changeT
       </form>
     </Modal.Body>
     <Modal.Footer>
-      <Button variant="secondary" onClick={closeCreateTicketModal}>
+      <Button variant="secondary" onClick={closeCreateTicketModal} >
         Close
       </Button>
-      <Button variant="primary" onClick={()=> {createTicket()}}>
-        Save
+      <Button variant="primary" onClick={()=> {createTicket()}} disabled={isloading}>
+      {isloading? (
+             <>
+             <Spinner animation="border" size="sm" className="mr-2" />{" "}
+             Please wait...
+           </>
+        ):"Save"}
       </Button>
     </Modal.Footer>
   </Modal>

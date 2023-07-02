@@ -1,15 +1,15 @@
 import React from 'react'
 import Modal from "react-bootstrap/Modal";
-import { ModalHeader, ModalTitle, Spinner } from "react-bootstrap";
+import {  Spinner } from "react-bootstrap";
 import { Button } from "react-bootstrap"
 
 function EditTicketModal({isLoading,showEditTicketModal,closeEditTicketModal,rowTicket,changeTicketDetails,updateTicket}) {
 let userType = localStorage.getItem("userType")
   return (
-    <Modal show={showEditTicketModal} onHide={closeEditTicketModal}>
-    <ModalHeader closeButton>
-      <ModalTitle>Edit Ticket details</ModalTitle>
-    </ModalHeader>
+    <Modal size="lg" show={showEditTicketModal} onHide={closeEditTicketModal}>
+    <Modal.Header >
+      <Modal.Title>Edit Ticket details</Modal.Title>
+    </Modal.Header>
     <Modal.Body>
       <form>
         <h5 className="card-subtitle text-primary lead">

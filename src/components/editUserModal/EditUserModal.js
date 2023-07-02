@@ -7,8 +7,8 @@ function EditUserModal({isLoading, showUserModal,closeUserModal,rowUser,changeUs
   
   const isUserTypeAdmin = localStorage.getItem("userType") === "Admin";
   return (
-    <Modal show={showUserModal} onHide={closeUserModal}>
-    <ModalHeader closeButton>
+    <Modal size="lg" show={showUserModal} onHide={closeUserModal}>
+    <ModalHeader >
       <ModalTitle>Edit user details</ModalTitle>
     </ModalHeader>
     <Modal.Body>

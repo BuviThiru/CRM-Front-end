@@ -49,7 +49,8 @@ function MainPage() {
         if(userType==="Admin") {       
         const user = await getAllusers();
         setAllUser(user);
-      setLoading(false)}
+      setLoading(false)
+    }
         else return;
       } catch (error) {
         console.log(error);
