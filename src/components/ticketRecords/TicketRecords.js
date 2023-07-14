@@ -88,7 +88,7 @@ function TicketRecords({tickets,setRowTicket,setShowEditTicketModal}) {
               {
                 field: "ticketPriority",
                 title: "Priority",
-                width: "10%",
+                width: "2%",
                 lookup: {
                     1: "1",
                     2: "2",

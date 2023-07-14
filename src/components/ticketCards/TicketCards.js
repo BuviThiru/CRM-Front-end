@@ -5,11 +5,9 @@ import 'react-circular-progressbar/dist/styles.css';
 
 const TicketCard = (props) =>{ 
  
-    return (
-     
+    return (     
         <>
-        <div className={"card bg-" + props.cardColor} style={{width: 12+"rem"}} >   
-     
+        <div className={"card bg-" + props.cardColor} style={{width: 13+"rem"}} >  
             <div className="card-body">
                 <h5 className="card-title">{props.cardTitle}</h5>
                 <hr />
@@ -28,8 +26,7 @@ const TicketCard = (props) =>{
                     </div>
                 </div>
             </div>
-        </div>
-      
+        </div>      
     </>
         
     )

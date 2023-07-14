@@ -64,7 +64,7 @@ function SignUp() {
           localStorage.setItem("userType", data1.Message.user.userType);
           localStorage.setItem("clientName", data1.Message.user.clientName);
           localStorage.setItem("userType", data1.Message.user.userType);
-          navigate("/");
+          navigate("/mainpage");
           Swal.fire({
             title: "Welcome!",
             text: "Successfully Signed-up & Authenticated",

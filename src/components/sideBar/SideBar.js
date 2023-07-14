@@ -10,15 +10,20 @@ import { BsTicketFill } from "react-icons/bs";
 import { IoIosCreate } from "react-icons/io";
 import "../../App.css";
 
+import {RiLogoutCircleRLine} from 'react-icons/ri'
+import { useNavigate } from "react-router-dom";
+
+
 function SideBar({
   setShowTicketCards,
   setShowTicketRecords,
   setShowUserProfile,
   setShowUserRecords,
-  setShowCreateTicketModal,
-  getTickets,
+  setShowCreateTicketModal,setHomepage,
+  getTickets, 
 }) {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [selected,setSelected] = useState("");
   let role = localStorage.getItem("userType");
 
   useEffect(() => {
@@ -33,6 +38,8 @@ function SideBar({
     setShowTicketRecords(false);
     setShowUserProfile(false);
     getTickets("all");
+    setHomepage(false)
+    setSelected("dashboard")
   }
 
   function handleUsersClick() {
@@ -40,6 +47,9 @@ function SideBar({
     setShowUserRecords(true);
     setShowTicketRecords(false);
     setShowUserProfile(false);
+    setHomepage(false)
+    setSelected("users")
+
   }
 
   function handleTicketsClick(selectedOption) {
@@ -48,6 +58,9 @@ function SideBar({
     setShowTicketRecords(true);
     setShowUserProfile(false);
     getTickets("all");
+    setHomepage(false)
+    setSelected("dashboard")
+
   }
 
   function handleProfileClick() {
@@ -55,6 +68,8 @@ function SideBar({
     setShowUserRecords(false);
     setShowTicketRecords(false);
     setShowUserProfile(true);
+    setHomepage(false)
+
   }
 
   function handleAssignedTickets() {
@@ -63,6 +78,8 @@ function SideBar({
     setShowTicketRecords(true);
     setShowUserProfile(false);
     getTickets("assigned");
+    setHomepage(false)
+
   }
 
   function handleCreatedTickets() {
@@ -71,6 +88,8 @@ function SideBar({
     setShowTicketRecords(true);
     setShowUserProfile(false);
     getTickets("created");
+    setHomepage(false)
+
   }
 
   function handleCreateTicket() {
@@ -79,8 +98,26 @@ function SideBar({
     setShowTicketRecords(false);
     setShowUserProfile(false);
     setShowCreateTicketModal(true);
-  }
+    setHomepage(false)
 
+  }
+  const navigate = useNavigate();
+  function logout() {
+    // Clear local storage
+    localStorage.clear();
+  
+    // Clear cache
+    // if ('caches' in window) {
+    //   caches.keys().then(function (cacheNames) {
+    //     cacheNames.forEach(function (cacheName) {
+    //       caches.delete(cacheName);
+    //     });
+    //   });
+    // }
+
+    // Redirect to the login page
+    navigate("/login");
+  }
   return (
     <div className="sidebarContainer darkBlue">
       <div className="my-3 cursor-pointer bold" onClick={handleDashBoardClick}>
@@ -130,6 +167,13 @@ function SideBar({
           <MdCreateNewFolder />
         </span>
         Create Ticket
+      </div>
+
+      <div className="my-3 cursor-pointer" onClick={logout}>
+        <span className="mr-2 ">
+          <RiLogoutCircleRLine />
+        </span>
+        Logout
       </div>
     </div>
   );

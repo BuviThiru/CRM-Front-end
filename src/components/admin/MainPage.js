@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./admin.css";
+import Home from "../home/Home";
 import axios from "axios";
 import BASE_URL from "../../utils/urls";
 import TicketCard from "../ticketCards/TicketCards";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import {getAllTickets, getAllusers, getMyAssignedTickets,getMyCreatedTickets} from "../../utils/adminServices";
+import {
+  getAllTickets,
+  getAllusers,
+  getMyAssignedTickets,
+  getMyCreatedTickets,
+} from "../../utils/adminServices";
 import UserRecords from "../userRecords/UserRecords";
 import EditUserModal from "../editUserModal/EditUserModal";
 import TicketByStatusModal from "../ticketByStatusModal.js/TicketByStatusModal";
@@ -23,35 +29,37 @@ function MainPage() {
   const [tickets, setTickets] = useState([]);
   const [cardData, setCardData] = useState([]);
   const [rowUser, setRowUser] = useState("");
-  const [updateTicketLoading,setUpdateTicketLoading] = useState(false)
-
-  const ticketStatus = [ "open","inProgress","resolved", "cancelled","onHold"];
+  const [updateTicketLoading, setUpdateTicketLoading] = useState(false);
+  const [homepage, setHomepage] = useState(true);
+  const ticketStatus = [
+    "open",
+    "inProgress",
+    "resolved",
+    "cancelled",
+    "onHold",
+  ];
   const ticketCardColor = ["success", "primary", "info", "warning", "light"];
   const [showUserModal, setShowUserModal] = useState(false);
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [rowTicket, setRowTicket] = useState("");
   const [showEditTicketModal, setShowEditTicketModal] = useState(false);
-  const [showTickectCards, setShowTicketCards] = useState(true);
-  const [showUserRecords, setShowUserRecords] = useState(true);
+  const [showTickectCards, setShowTicketCards] = useState(false);
+  const [showUserRecords, setShowUserRecords] = useState(false);
   const [showTicketRecords, setShowTicketRecords] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
-  const [ updateUserLoading, setUpdateUserLoading] = useState(false)
+  const [updateUserLoading, setUpdateUserLoading] = useState(false);
   const userType = localStorage.getItem("userType");
-  const [loading,setLoading] = useState(false)
-
-
+  const [loading, setLoading] = useState(false);
+  const [type, setType] = useState("all");
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true)
-      try {       
-        if(userType==="Admin") {       
-        const user = await getAllusers();
-        setAllUser(user);
-      setLoading(false)
-    }
-        else return;
+      try {
+        if (userType === "Admin") {
+          const user = await getAllusers();
+          setAllUser(user);
+        } else return;
       } catch (error) {
         console.log(error);
       }
@@ -76,45 +84,45 @@ function MainPage() {
   };
 
   const updateUser = async () => {
-    try{
-      setUpdateUserLoading(true)
+    try {
+      setUpdateUserLoading(true);
       let selfId = localStorage.getItem("id");
-    let updatedUser = {
-      id: rowUser._id,
-      name: rowUser.name,
-      email: rowUser.email,
-      userType: rowUser.userType,
-      clientName: rowUser.clientName,
-      userStatus: rowUser.userStatus,
-    };
+      let updatedUser = {
+        id: rowUser._id,
+        name: rowUser.name,
+        email: rowUser.email,
+        userType: rowUser.userType,
+        clientName: rowUser.clientName,
+        userStatus: rowUser.userStatus,
+      };
 
-    let response = await axios.patch(
-      BASE_URL + `/user/updateUser/${selfId}`,
-      updatedUser
-    );
-    console.log(response)
-    let data = response.data.message;
-    let token = response.data.token;
-    if (selfId === rowUser._id) {
-      localStorage.setItem("name", data.name);
-      localStorage.setItem("email", data.email);
-      localStorage.setItem("token", token);
-      localStorage.setItem("clientName", data.clientName);
-    }
+      let response = await axios.patch(
+        BASE_URL + `/user/updateUser/${selfId}`,
+        updatedUser
+      );
+      console.log(response);
+      let data = response.data.message;
+      let token = response.data.token;
+      if (selfId === rowUser._id) {
+        localStorage.setItem("name", data.name);
+        localStorage.setItem("email", data.email);
+        localStorage.setItem("token", token);
+        localStorage.setItem("clientName", data.clientName);
+      }
 
-    const users = await getAllusers();
-    setAllUser(users);
-    setShowUserModal(false);
-    }catch(err){
-      console.log(err)
-    }finally{
-      setUpdateUserLoading(false)
+      const users = await getAllusers();
+      setAllUser(users);
+      setShowUserModal(false);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setUpdateUserLoading(false);
     }
   };
 
-  const updateTicket = async () => {   
+  const updateTicket = async () => {
     try {
-      setUpdateTicketLoading(true)
+      setUpdateTicketLoading(true);
       let updatedTicketObj = {
         id: rowTicket._id,
         title: rowTicket.title,
@@ -127,16 +135,15 @@ function MainPage() {
         BASE_URL + `/tickets/updateTicket/${rowTicket._id}`,
         updatedTicketObj
       );
-    
+
       setShowEditTicketModal(false);
       if (response.data.result) {
         Swal.fire({
           title: "Update Result",
           text: "Successfully updated",
           icon: "success",
-        })
+        });
       }
-     
     } catch (err) {
       console.log(err);
       Swal.fire({
@@ -144,9 +151,8 @@ function MainPage() {
         text: `${err?.response?.data?.result}`,
         icon: "error",
       });
-
-    } finally{
-      setUpdateTicketLoading(false)
+    } finally {
+      setUpdateTicketLoading(false);
     }
   };
 
@@ -168,30 +174,42 @@ function MainPage() {
   }
 
   async function getTickets(type) {
-    const currentTicketType = type;
-    setLoading(true)
-    let response;
-    switch (currentTicketType) {
-      case "all":
-        response = await getAllTickets();    
-        break;
-      case "assigned":
-        response = await getMyAssignedTickets();       
-        break;
-      case "created":
-        response = await getMyCreatedTickets();      
-        break;
-
-      default:
-        response = await getAllTickets();      
-        break;
-    }
-    setTickets(response);
-    cardDetails(response);
-    setLoading(false)
-    return response;
+    setType(type);
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setTickets([]);
+      // console.log(localStorage.getItem("name"))
+      let response;
+
+      switch (type) {
+        case "all":
+          response = await getAllTickets();
+          break;
+        case "assigned":
+          response = await getMyAssignedTickets();
+          break;
+        case "created":
+          response = await getMyCreatedTickets();
+          break;
+        default:
+          response = await getAllTickets();
+          break;
+      }
+
+      setTickets(response);
+      cardDetails(response);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [type]);
+
+  useEffect(() => {
+    setTickets([]);
+  }, []);
   const cardDetails = async (tickets) => {
     // console.log(tickets);
     const ticketData = {};
@@ -235,107 +253,107 @@ function MainPage() {
             setShowTicketCards,
             setShowTicketRecords,
             setShowUserProfile,
-            setShowUserRecords,         
+            setShowUserRecords,
             setShowCreateTicketModal,
+            setHomepage,
             getTickets: getTickets,
+            setTickets,
           }}
         />
       </div>
-     {loading ? <Shimmer/> :  
-      <div> 
-      <div>
-          {showTickectCards && (
-            <>
-              <div className="d-flex mr-3">
-                {cardData.map((card, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="d-flex m-3 px-3"
-                     
-                    >
-                      <TicketCard {...card} />{" "}
-                    </div>
-                  );
-                })}
-              </div>
-              <hr />
-            </>
-          )}
-        </div>
-      <div>
-
-
-        {showCreateTicketModal && (
-          <CreateTicketModal
-            {...{
-              showCreateTicketModal,
-              closeCreateTicketModal,
-              changeTicketDetails,
-            }}
-          />
-        )}
-      </div>
-      <div className="adminContainer">
-        {showTicketRecords && (
+      {loading ? (
+        <Shimmer />
+      ) : (
+        <div>
+          <div>{homepage && <Home />}</div>
           <div>
-            <TicketRecords
-              tickets={tickets}
-              setRowTicket={setRowTicket}
-              setShowEditTicketModal={setShowEditTicketModal}
-            />
+            {showTickectCards && (
+              <>
+                <div className="d-flex mr-3">
+                  {cardData.map((card, index) => {
+                    return (
+                      <div key={index} className="d-flex m-3 px-3">
+                        <TicketCard {...card} />{" "}
+                      </div>
+                    );
+                  })}
+                </div>
+                <hr />
+              </>
+            )}
           </div>
-        )}
-        
-        <div>
-          <TicketByStatusModal
-            showTicketModal={showTicketModal}
-            closeTicketModal={closeTicketModal}         
-          />
-        </div>
-        
-        <div>
-          {userType === "Admin" && showUserRecords ? (
+          <div>
+            {showCreateTicketModal && (
+              <CreateTicketModal
+                {...{
+                  showCreateTicketModal,
+                  closeCreateTicketModal,
+                  changeTicketDetails,
+                }}
+              />
+            )}
+          </div>
+          <div className="adminContainer">
+            {showTicketRecords && (
+              <div>
+                <TicketRecords
+                  tickets={tickets}
+                  setRowTicket={setRowTicket}
+                  setShowEditTicketModal={setShowEditTicketModal}
+                />
+              </div>
+            )}
+
             <div>
-              <UserRecords
-                allUser={allUser}
-                setRowUser={setRowUser}
-                setShowUserModal={setShowUserModal}
+              <TicketByStatusModal
+                showTicketModal={showTicketModal}
+                closeTicketModal={closeTicketModal}
               />
             </div>
-          ) : (
-            <></>
-          )}
-        </div>
-        <div>
-          <EditTicketModal
-            showEditTicketModal={showEditTicketModal}
-            closeEditTicketModal={closeEditTicketModal}
-            rowTicket={rowTicket}
-            changeTicketDetails={changeTicketDetails}
-            updateTicket={updateTicket}
-            isLoading = {updateTicketLoading}
-          />
-        </div>
-        <div className="sideBarContainer p-5">
-          {" "}
-          {showUserProfile && (
-            <UserPRofile
-              setShowUserModal={setShowUserModal}
-              setRowUser={setRowUser}
+
+            <div>
+              {userType === "Admin" && showUserRecords ? (
+                <div>
+                  <UserRecords
+                    allUser={allUser}
+                    setRowUser={setRowUser}
+                    setShowUserModal={setShowUserModal}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div>
+              <EditTicketModal
+                showEditTicketModal={showEditTicketModal}
+                closeEditTicketModal={closeEditTicketModal}
+                rowTicket={rowTicket}
+                changeTicketDetails={changeTicketDetails}
+                updateTicket={updateTicket}
+                isLoading={updateTicketLoading}
+              />
+            </div>
+            <div className="sideBarContainer p-5">
+              {" "}
+              {showUserProfile && (
+                <UserPRofile
+                  setShowUserModal={setShowUserModal}
+                  setRowUser={setRowUser}
+                />
+              )}
+            </div>
+            <EditUserModal
+              showUserModal={showUserModal}
+              closeUserModal={closeUserModal}
+              rowUser={rowUser}
+              changeUserDetails={changeUserDetails}
+              updateUser={updateUser}
+              isLoading={updateUserLoading}
             />
-          )}
+          </div>
         </div>
-        <EditUserModal
-          showUserModal={showUserModal}
-          closeUserModal={closeUserModal}
-          rowUser={rowUser}
-          changeUserDetails={changeUserDetails}
-          updateUser={updateUser}
-          isLoading = {updateUserLoading}
-        />
-      </div>
-    </div>}
+      )}
     </div>
   );
 }

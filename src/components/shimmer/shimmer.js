@@ -17,7 +17,7 @@ const Shimmer = () => {
       <div className="table-shimmercontainer">
       <div>
            <MaterialTable         
-            title={"Ticket Records"}
+            title={"Please Wait. Fetching your Records..............."}
             options={{
               // Allow user to hide/show
               // columns from Columns Button

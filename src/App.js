@@ -35,11 +35,11 @@ function App() {
       <Routes>
         <Route path="/login" element={ <Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/" element={token ? withLayout(<Home/> 
+        <Route path="/mainpage" element={token ? withLayout(<MainPage/> 
         ) : (
           <Navigate to="/login" replace={true}/>
         )} />
-        <Route path="/mainpage"  element= {withLayout(<MainPage/>)} replace={true}/>
+       
         
         
       </Routes>

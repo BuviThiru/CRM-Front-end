@@ -56,13 +56,13 @@ function Login() {
         localStorage.setItem("email", data.Message.user.email);
         localStorage.setItem("userType", data.Message.user.userType);
         localStorage.setItem("clientName", data.Message.user.clientName);
-      
+        navigate("/mainpage");
         Swal.fire({
           title: "Welcome!",
           text: "Successfully Signed-up & Authenticated",
           icon: "success",
         })
-        navigate("/");
+      
         // return;
       } else {
         Swal.fire({
