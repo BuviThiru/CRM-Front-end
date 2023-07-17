@@ -104,19 +104,10 @@ function SideBar({
   const navigate = useNavigate();
   function logout() {
     // Clear local storage
-    localStorage.clear();
-  
-    // Clear cache
-    // if ('caches' in window) {
-    //   caches.keys().then(function (cacheNames) {
-    //     cacheNames.forEach(function (cacheName) {
-    //       caches.delete(cacheName);
-    //     });
-    //   });
-    // }
-
-    // Redirect to the login page
     navigate("/login");
+    localStorage.clear(); 
+  
+    console.log("logout")
   }
   return (
     <div className="sidebarContainer darkBlue">
