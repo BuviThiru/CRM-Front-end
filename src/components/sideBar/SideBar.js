@@ -104,8 +104,9 @@ function SideBar({
   const navigate = useNavigate();
   function logout() {
     // Clear local storage
+    localStorage.clear();
     navigate("/login");
-    localStorage.clear(); 
+    
   
     console.log("logout")
   }
