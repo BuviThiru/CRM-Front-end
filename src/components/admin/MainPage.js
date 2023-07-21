@@ -176,7 +176,40 @@ function MainPage() {
   async function getTickets(type) {
     setType(type);
   }
-
+  const cardDetails = async (tickets) => {
+    
+    const ticketData = {};
+    for (let i = 0; i < ticketStatus.length; i++) {
+      ticketData[ticketStatus[i]] = [];
+    }
+    /** above loop will result into a ticketsData object as given below:
+            ticketsData = {
+                "open" : [],
+                "closed" : [],
+                "inProgress" : [],
+                "cancelled":[],
+                "onHold":{}
+            }
+        */
+    for (let i = 0; i < tickets.length; i++) {
+      const currentTicket = tickets[i];
+      ticketData[currentTicket.status].push(currentTicket);
+    }
+    let totalTickets = tickets.length;
+    const cardData = [];
+    for (let i = 0; i < ticketStatus.length; i++) {
+      const data = {
+        cardTitle: ticketStatus[i],
+        cardColor: ticketCardColor[i],
+        numberOfTickets: ticketData[ticketStatus[i]].length,
+        percentage: parseInt(
+          (ticketData[ticketStatus[i]].length * 100) / totalTickets
+        ),
+      };
+      cardData.push(data);
+    }
+    setCardData(cardData);
+  };
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -210,40 +243,7 @@ function MainPage() {
   useEffect(() => {
     setTickets([]);
   }, []);
-  const cardDetails = async (tickets) => {
-    // console.log(tickets);
-    const ticketData = {};
-    for (let i = 0; i < ticketStatus.length; i++) {
-      ticketData[ticketStatus[i]] = [];
-    }
-    /** above loop will result into a ticketsData object as given below:
-            ticketsData = {
-                "open" : [],
-                "closed" : [],
-                "inProgress" : [],
-                "cancelled":[],
-                "onHold":{}
-            }
-        */
-    for (let i = 0; i < tickets.length; i++) {
-      const currentTicket = tickets[i];
-      ticketData[currentTicket.status].push(currentTicket);
-    }
-    let totalTickets = tickets.length;
-    const cardData = [];
-    for (let i = 0; i < ticketStatus.length; i++) {
-      const data = {
-        cardTitle: ticketStatus[i],
-        cardColor: ticketCardColor[i],
-        numberOfTickets: ticketData[ticketStatus[i]].length,
-        percentage: parseInt(
-          (ticketData[ticketStatus[i]].length * 100) / totalTickets
-        ),
-      };
-      cardData.push(data);
-    }
-    setCardData(cardData);
-  };
+ 
 
   return (
     <div className="d-flex  mainPageContainer">
