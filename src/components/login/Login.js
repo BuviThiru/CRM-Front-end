@@ -3,7 +3,7 @@ import "./login.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
+import logo from '../../assets/logo1.jpg'
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -56,14 +56,18 @@ function Login() {
         localStorage.setItem("email", data.Message.user.email);
         localStorage.setItem("userType", data.Message.user.userType);
         localStorage.setItem("clientName", data.Message.user.clientName);
-        navigate("/mainpage");
+       
         Swal.fire({
           title: "Welcome!",
           text: "Successfully Signed-up & Authenticated",
           icon: "success",
-        })
+         
+        }).then(() => {
+         navigate('/mainpage'); // Navigate to mainpage after Swal dialog is closed
+        });
+       
+
       
-        // return;
       } else {
         Swal.fire({
           title: "Sorry!",
@@ -87,7 +91,7 @@ function Login() {
               justifyContent: "center",
             }}
           >
-            <div className="mt-5 black font-weight-bold text-center">Log In</div>
+            <div className="mt-5 black font-weight-bold text-center"> <span> <img src={logo} alt="logo" className="logo" /></span> Log In</div>
           </Row>
           <Row className="mt-5 border p-5 xs={12} md={6}">
             <Col className="text-start">

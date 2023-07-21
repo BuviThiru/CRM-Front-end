@@ -100,7 +100,7 @@ function MainPage() {
         BASE_URL + `/user/updateUser/${selfId}`,
         updatedUser
       );
-      console.log(response);
+      // console.log(response);
       let data = response.data.message;
       let token = response.data.token;
       if (selfId === rowUser._id) {

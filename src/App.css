@@ -2,6 +2,9 @@
   color: black;
 }
 
+.white {
+  color: whitesmoke;
+}
 .blue {
   background-color:white;
   opacity: 0.2;
@@ -47,13 +50,12 @@
   display: flex;
   justify-content: center;
 }
-.backgroundImage{
-  
-    position: relative;
-    background: url('../src/assets/crmPic.jpg') no-repeat center center fixed;
-    background-size: cover;
-    height: 100vh;
-    filter: brightness(0.5)
-  }
+.backgroundImage {
+  position: relative;
+  background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+              url('https://media.istockphoto.com/id/1330248664/vector/hexagonal-and-rectangular-abstracts-with-a-digital-network-image-blue-gradient-background.jpg?s=612x612&w=0&k=20&c=JgeKAVSAO_S-A0r61OP99BqNduP0CXE7gvc0jjoAD4Q=') no-repeat center center fixed;
+  background-size: cover;
+  height: 100vh;
+}
   
  

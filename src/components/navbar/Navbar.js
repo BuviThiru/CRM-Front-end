@@ -15,10 +15,7 @@ function NavBar() {
   },[])
   
   const navigate = useNavigate();
-  function logout() {
-    localStorage.clear();
-     navigate("/login");
-  }
+
   function handleLogo(){
     navigate("/");
   }
@@ -44,12 +41,7 @@ function NavBar() {
                 Welcome {name}!
               </Nav.Link>
               
-              <Nav.Link
-                className="mr-3 text-white font-weight-bold"
-                onClick={logout}
-              >
-                Logout
-              </Nav.Link>
+             
             </Nav>
           </Navbar.Collapse>
         </div>

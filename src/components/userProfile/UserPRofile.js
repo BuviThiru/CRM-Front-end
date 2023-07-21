@@ -21,7 +21,7 @@ function UserPRofile({setShowUserModal,setRowUser}) {
       let userId = localStorage.getItem("id")
       async function getUserById(){
               const user = await axios.get(`${BASE_URL}/getUserById/${userId}`)
-              console.log(user.data.Message)
+              // console.log(user.data.Message)
               setRowUser(user.data.Message)
               setShowUserModal(true)
       }

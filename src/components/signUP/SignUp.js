@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Container, Row, Col, Form, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import logo from '../../assets/logo1.jpg'
 function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -64,13 +65,13 @@ function SignUp() {
           localStorage.setItem("userType", data1.Message.user.userType);
           localStorage.setItem("clientName", data1.Message.user.clientName);
           localStorage.setItem("userType", data1.Message.user.userType);
-          navigate("/mainpage");
+     
           Swal.fire({
             title: "Welcome!",
             text: "Successfully Signed-up & Authenticated",
             icon: "success",
           })
-        
+          navigate("/mainpage");
           
         } else {
           Swal.fire({
@@ -114,11 +115,11 @@ function SignUp() {
               justifyContent: "center",
             }}
           >
-            <div className="mt-5 black font-weight-bold text-center">
-              Sign Up
+            <div className="mt-1 black font-weight-bold text-center">
+            Sign Up<span> <img src={logo} alt="logo" className="logo" /></span> 
             </div>
           </Row>
-          <Row className="mt-5 border p-5 xs={12} md={6}">
+          <Row className="mt-5 border p-3 xs={12} md={6}">
             <Col className="text-start">
               <Form onSubmit={handleSignupSubmit}>
                 <Form.Group className="mb-4 black font-weight-bold">

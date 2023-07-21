@@ -21,14 +21,7 @@ function UserRecords({allUser,setRowUser,setShowUserModal}) {
               filtering: true,
 
               exportMenu: [
-                {
-                  label: "Export PDF",
-                  //// You can do whatever you wish in this function. We provide the
-                  //// raw table columns and table data for you to modify, if needed.
-                  // exportFunc: (cols, datas) => console.log({ cols, datas })
-                  exportFunc: (cols, datas) =>
-                    ExportPdf(cols, datas, "userDataPdf"),
-                },
+              
                 {
                   label: "Export CSV",
                   exportFunc: (cols, datas) =>

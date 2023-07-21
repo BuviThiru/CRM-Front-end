@@ -108,7 +108,7 @@ function SideBar({
     navigate("/login");
     
   
-    console.log("logout")
+    // console.log("logout")
   }
   return (
     <div className="sidebarContainer darkBlue">

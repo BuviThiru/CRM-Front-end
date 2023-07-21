@@ -9,6 +9,8 @@ import Footer from "./components/footer/Footer" ;
 
 import MainPage from "./components/admin/MainPage";
 import { useEffect, useState } from "react";
+import store from "./utils/store";
+import { Provider } from "react-redux";
 
 
 
@@ -26,43 +28,23 @@ function withLayout(Component) {
 
 
 function App() {
- const [token,setToken] = useState("")
-//  useEffect(() => {
-    
-//   window.addEventListener('storage', () => {
-//     // When local storage changes, dump the list to
-//     // the console.
-//      setToken((localStorage.getItem('token')) || "")   
-//   });
-     
-  // }, [token])
+const token = localStorage.getItem("token")
 
 
-  useEffect(() => {
-    const handleExceptionData = () => {
-        setToken(localStorage.getItem('token'))
-    }
-    window.addEventListener('storage', handleExceptionData)
-    return function cleanup() {
-        window.removeEventListener('storage', handleExceptionData)
-    }
-}, [token])
-console.log("RENDERED",token)
+// console.log(token)
   return (
+    <Provider store = {store}>
      <Router>     
-      <Routes>
+      <Routes>      
         <Route path="/" element={!token?<Navigate to="/login" replace={true} />:<Navigate to = "/mainpage" replace={true}/>} />
-        <Route path="/login" element={!token?<Login />:<Navigate to = "/mainpage" replace={true}/>} />
+        {/* <Route path="/login" element={!token?<Login />:<Navigate to = "/mainpage" replace={true}/>} /> */}
         <Route path="/login" element={ <Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/mainpage" element={token ? withLayout(<MainPage/> 
-        ) : (
-          <Navigate to="/login" replace={true}/>
-        )} />        
-        
+        <Route path="/mainpage" element={ withLayout(<MainPage/>)}/> 
+      
       </Routes>
     </Router>
-
+    </Provider> 
   );
 }
 
