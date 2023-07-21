@@ -163,9 +163,9 @@ function MainPage() {
   function closeTicketModal() {
     setShowTicketModal(false);
   }
-  function showTicketModalFn(index) {
-    setShowTicketModal(true);
-  }
+  // function showTicketModalFn(index) {
+  //   setShowTicketModal(true);
+  // }
   function closeEditTicketModal() {
     setShowEditTicketModal(false);
   }

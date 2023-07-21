@@ -8,7 +8,6 @@ import NavBar from "../src/components/navbar/Navbar";
 import Footer from "./components/footer/Footer" ;
 
 import MainPage from "./components/admin/MainPage";
-import { useEffect, useState } from "react";
 import store from "./utils/store";
 import { Provider } from "react-redux";
 
@@ -31,7 +30,7 @@ function App() {
 const token = localStorage.getItem("token")
 
 
-// console.log(token)
+
   return (
     <Provider store = {store}>
      <Router>     

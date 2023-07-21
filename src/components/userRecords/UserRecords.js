@@ -1,7 +1,7 @@
 import React from 'react'
 import MaterialTable from "@material-table/core";
 import ExportCsv from "@material-table/exporters/csv";
-import ExportPdf from "@material-table/exporters/pdf";
+
 
 function UserRecords({allUser,setRowUser,setShowUserModal}) {
   return (
